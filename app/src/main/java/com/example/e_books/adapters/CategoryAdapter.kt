@@ -1,5 +1,6 @@
 package com.example.e_books.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ class CategoryAdapter(
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.category_fragment, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
