@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/category_fragment"
-        android:name="com.example.e_books.CategoryFragment"
+        android:name="com.example.e_books.fragments.CategoryFragment"
         tools:layout="@layout/category_fragment">
 
     </fragment>
     <fragment
         android:id="@+id/category_details_fragment"
-        android:name="com.example.e_books.CategoryDetailsFragment"
+        android:name="com.example.e_books.fragments.CategoryDetailsFragment"
         tools:layout="@layout/category_details_fragment">
 
     </fragment>
     <fragment
         android:id="@+id/book_details_fragment"
-        android:name="com.example.e_books.BookDetailsFragment"
+        android:name="com.example.e_books.fragments.BookDetailsFragment"
         tools:layout="@layout/book_details_fragment">
 
     </fragment>
