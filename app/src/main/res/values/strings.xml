@@ -21,4 +21,8 @@
     <string name="book_title">სათაური:</string>
     <string name="author">ავტორი:</string>
     <string name="page_numbers">გვერდები:</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="settings">Settings</string>
 </resources>
