@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/grey">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -17,9 +18,9 @@
 
             <ImageView
                 android:id="@+id/details_book_image"
-                android:layout_width="100dp"
-                android:layout_height="125dp"
-                android:layout_margin="5dp"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -32,25 +33,33 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/category_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textStyle="bold"
+                    tools:text="Author" />
+
+                <TextView
                     android:id="@+id/category_book_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="Name" />
 
                 <TextView
-                    android:id="@+id/category_author"
+                    android:id="@+id/category_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:textSize="18sp"
+                    android:ellipsize="end"
+                    android:maxLines="4"
                     android:textStyle="bold"
-                    tools:text="Author" />
+                    tools:text="Description" />
 
             </LinearLayout>
 

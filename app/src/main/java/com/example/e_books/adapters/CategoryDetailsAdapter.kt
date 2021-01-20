@@ -31,6 +31,7 @@ class CategoryDetailsAdapter(
             with(book) {
                 itemView.category_book_title.text = name
                 itemView.category_author.text = author
+                itemView.category_description.text = description
                 Glide.with(itemView.context).load(imageUrl).into(itemView.details_book_image)
 
                 itemView.setOnClickListener {
