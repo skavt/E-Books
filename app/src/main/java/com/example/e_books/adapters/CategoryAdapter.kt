@@ -11,7 +11,8 @@ import com.example.e_books.model.Category
 import kotlinx.android.synthetic.main.category_item.view.*
 
 class CategoryAdapter(
-    private val categoryList: ArrayList<Category>
+    private val categoryList: ArrayList<Category>,
+    private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
@@ -34,7 +35,15 @@ class CategoryAdapter(
                 itemView.category_book_item.layoutManager =
                     LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
                 itemView.category_book_item.adapter = BookAdapter(books as ArrayList<Books>)
+
+                itemView.see_more.setOnClickListener {
+                    listener.onSeeMoreClick(category)
+                }
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onSeeMoreClick(category: Category)
     }
 }
