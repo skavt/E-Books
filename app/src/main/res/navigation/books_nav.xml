@@ -23,4 +23,9 @@
         tools:layout="@layout/book_details_fragment">
 
     </fragment>
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.example.e_books.fragments.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" />
 </navigation>
