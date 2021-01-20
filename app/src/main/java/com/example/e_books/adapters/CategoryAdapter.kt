@@ -34,7 +34,8 @@ class CategoryAdapter(
 
                 itemView.category_book_item.layoutManager =
                     LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-                itemView.category_book_item.adapter = BookAdapter(books as ArrayList<Books>)
+                itemView.category_book_item.adapter =
+                    BookAdapter(books as ArrayList<Books>, listener)
 
                 itemView.see_more.setOnClickListener {
                     listener.onSeeMoreClick(category)
@@ -45,5 +46,6 @@ class CategoryAdapter(
 
     interface OnItemClickListener {
         fun onSeeMoreClick(category: Category)
+        fun onBookClick(book: Books)
     }
 }

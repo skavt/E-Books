@@ -10,7 +10,8 @@ import com.example.e_books.model.Books
 import kotlinx.android.synthetic.main.category_book_item.view.*
 
 class BookAdapter(
-    private val bookList: ArrayList<Books>
+    private val bookList: ArrayList<Books>,
+    private val listener: CategoryAdapter.OnItemClickListener
 ) :
     RecyclerView.Adapter<BookAdapter.ViewHolder>() {
 
@@ -29,6 +30,11 @@ class BookAdapter(
         fun setContent(book: Books) {
             with(book) {
                 Glide.with(itemView.context).load(imageUrl).into(itemView.book_image)
+
+                itemView.book_image.setOnClickListener {
+                    listener.onBookClick(book)
+                }
+
             }
         }
     }

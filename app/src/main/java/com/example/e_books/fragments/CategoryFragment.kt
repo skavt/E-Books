@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
 import com.example.e_books.extentions.castCategoryData
+import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
 import com.google.firebase.database.DataSnapshot
@@ -49,7 +50,6 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                     category_item.adapter =
                         CategoryAdapter(castCategoryData(memberList), this@CategoryFragment)
                 }
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -62,6 +62,11 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     override fun onSeeMoreClick(category: Category) {
         bookLiveData.setCategory(category)
         categoryView.findNavController().navigate(R.id.category_details_fragment)
+    }
+
+    override fun onBookClick(book: Books) {
+        bookLiveData.setBook(book)
+        categoryView.findNavController().navigate(R.id.book_details_fragment)
     }
 
 }
