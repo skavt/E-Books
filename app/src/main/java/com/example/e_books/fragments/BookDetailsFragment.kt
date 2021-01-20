@@ -26,14 +26,18 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
         setHasOptionsMenu(true)
 
         val bookTitle = bookDetailsView.findViewById<TextView>(R.id.book_details_title)
+        val bookDescription = bookDetailsView.findViewById<TextView>(R.id.book_details_description)
         val bookAuthor = bookDetailsView.findViewById<TextView>(R.id.book_details_author)
+        val bookPageNumbers = bookDetailsView.findViewById<TextView>(R.id.book_details_page_numbers)
         val image = bookDetailsView.findViewById<ImageView>(R.id.book_details_image)
 
         bookLiveData.bookData.observe(viewLifecycleOwner, { book ->
             with(book) {
                 (activity as AppCompatActivity).title = name
                 bookTitle.text = name
+                bookDescription.text = description
                 bookAuthor.text = author
+                bookPageNumbers.text = pageNumbers
                 context?.let { Glide.with(it).load(imageUrl).into(image) }
             }
         })
