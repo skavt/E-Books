@@ -1,6 +1,5 @@
 package com.example.e_books.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
-import kotlinx.android.synthetic.main.category_fragment.*
 import kotlinx.android.synthetic.main.category_item.view.*
 
 class CategoryAdapter(
