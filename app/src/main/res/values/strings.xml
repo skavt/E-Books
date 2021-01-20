@@ -26,4 +26,8 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="enter_password">Enter Password</string>
     <string name="enter_email">Enter Email</string>
+    <string name="see_more">ნახეთ ყველა</string>
+    <string name="book_title">სათაური:</string>
+    <string name="author">ავტორი:</string>
+    <string name="page_numbers">გვერდები:</string>
 </resources>
