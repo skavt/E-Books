@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.e_books.R
 import com.example.e_books.model.Books
 import kotlinx.android.synthetic.main.category_book_item.view.*
@@ -21,13 +22,13 @@ class BookAdapter(
         holder.setContent(bookList[position])
     }
 
-    override fun getItemCount(): Int = bookList.size
+    override fun getItemCount(): Int = 5
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun setContent(book: Books) {
             with(book) {
-                itemView.test.text = book_id.toString()
+                Glide.with(itemView.context).load(imageUrl).into(itemView.book_image)
             }
         }
     }

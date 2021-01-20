@@ -67,10 +67,14 @@ class CategoryFragment : Fragment(R.layout.category_fragment) {
         while (index < size) {
             val mapBookData: HashMap<*, *> = bookData[index] as HashMap<*, *>
             val bookId = mapBookData["book_id"].toString().toInt()
-//            val categoryName = mapBookData["category_name"].toString()
-//            val books = mapBookData["books"] as ArrayList<*>
+            val name = mapBookData["name"].toString()
+            val author = mapBookData["author"].toString()
+            val description = mapBookData["description"].toString()
+            val bookUrl = mapBookData["bookUrl"].toString()
+            val imageUrl = mapBookData["imageUrl"].toString()
+            val pageNumbers = mapBookData["pageNumbers"].toString()
 
-            bookList.add(Books(bookId))
+            bookList.add(Books(bookId, name, author, description, bookUrl, imageUrl, pageNumbers))
             index++
         }
         return bookList
