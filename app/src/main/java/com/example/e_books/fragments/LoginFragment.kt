@@ -36,6 +36,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
         updateUiState(auth.currentUser)
 
+        auth.signOut()
         registerButton.setOnClickListener {
 
             if (textPassRepeat.visibility == View.VISIBLE) {

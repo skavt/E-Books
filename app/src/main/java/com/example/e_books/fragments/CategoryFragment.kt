@@ -39,18 +39,16 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
         val navController = findNavController()
 
-        auth.addAuthStateListener { auth ->
-            Log.d("Auth", "onViewCreated: AuthListener entered")
-
-            if (auth.currentUser == null) {
-                navController.navigate(R.id.login_fragment)
-            } else {
-                Toast.makeText(context, "Welcome, ${auth.currentUser!!.email}", Toast.LENGTH_LONG).show()
-            }
+        if (auth.currentUser == null) {
+            navController.navigate(R.id.login_fragment)
+            return view
+        } else {
+            Toast.makeText(context, "Welcome, ${auth.currentUser!!.email}", Toast.LENGTH_LONG)
+                .show()
         }
 
         categoryView = inflater.inflate(R.layout.category_fragment, container, false)
