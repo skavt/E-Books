@@ -18,7 +18,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="log_out">Log Out</string>
-    <string name="log_in">Log In</string>
+    <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
     <string name="repeat_password">Repeat Password</string>
     <string name="enter_password">Enter Password</string>
@@ -27,4 +27,10 @@
     <string name="book_title">სათაური:</string>
     <string name="author">ავტორი:</string>
     <string name="page_numbers">გვერდები:</string>
+
+    <string name="not_match">Passwords does not match!</string>
+    <string name="invalid_password">Password must be minimum 6 symbols!</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="failed_register">Authentication failed.</string>
+    <string name="failed_login">Username or password is not correct</string>
 </resources>

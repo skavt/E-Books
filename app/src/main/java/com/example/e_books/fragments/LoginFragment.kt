@@ -1,14 +1,19 @@
 package com.example.e_books.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.e_books.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -16,21 +21,32 @@ import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment(R.layout.login_fragment) {
 
-    private var auth = Firebase.auth
+    private lateinit var auth: FirebaseAuth
     private lateinit var loginButton: Button
     private lateinit var registerButton: Button
     private lateinit var textEmail: TextView
     private lateinit var textPass: TextView
     private lateinit var textPassRepeat: TextView
+    private lateinit var loginView: View
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        textEmail = view.findViewById(R.id.textEmail)
-        textPass = view.findViewById(R.id.textPass)
-        textPassRepeat = view.findViewById(R.id.textPassRepeat)
-        textPassRepeat.visibility = View.GONE
-        loginButton = view.findViewById(R.id.loginButton)
-        registerButton = view.findViewById(R.id.registerButton)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        loginView = inflater.inflate(R.layout.login_fragment, container, false)
+        (activity as AppCompatActivity).apply {
+            title = getString(R.string.sign_in)
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
+        setHasOptionsMenu(true)
+
+        textEmail = loginView.findViewById(R.id.textEmail)
+        textPass = loginView.findViewById(R.id.textPass)
+        textPassRepeat = loginView.findViewById(R.id.textPassRepeat)
+        textPassRepeat.visibility = GONE
+        loginButton = loginView.findViewById(R.id.loginButton)
+        registerButton = loginView.findViewById(R.id.registerButton)
 
         auth = Firebase.auth
 
@@ -38,78 +54,102 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
         auth.signOut()
         registerButton.setOnClickListener {
-
-            if (textPassRepeat.visibility == View.VISIBLE) {
-                val email = textEmail.text.toString()
-                val password = textPass.text.toString()
-                if (validateEmail(textEmail) && validatePassword(textPass) && checkPasswords(
-                        textPass,
-                        textPassRepeat
-                    )
-                ) {
-                    register(email, password)
-                }
-            } else {
-                textPassRepeat.visibility = View.VISIBLE
-                loginButton.visibility = View.GONE
+            (activity as AppCompatActivity).apply {
+                title = getString(R.string.register)
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
 
+            when (textPassRepeat.visibility) {
+                VISIBLE -> {
+                    val email = textEmail.text.toString()
+                    val password = textPass.text.toString()
+                    when {
+                        validateEmail(textEmail) && validatePassword(textPass) &&
+                                checkPasswords(textPass, textPassRepeat) -> {
+                            register(email, password)
+                        }
+                    }
+                }
+                else -> {
+                    textPassRepeat.visibility = VISIBLE
+                    loginButton.visibility = GONE
+                    textEmail.apply {
+                        text = ""
+                        error = null
+                    }
+                    textPass.apply {
+                        text = ""
+                        error = null
+                    }
+                }
+            }
         }
 
         loginButton.setOnClickListener {
-            if (auth.currentUser != null) {
-                signOut()
-                updateUiState(null)
-            } else {
-                val email = textEmail.text.toString()
-                val pass = textPass.text.toString()
-                if (validateEmail(textEmail) && validatePassword(textPass)) {
-                    signIn(email, pass)
+            when {
+                auth.currentUser != null -> {
+                    signOut()
+                    updateUiState(null)
+                }
+                else -> {
+                    val email = textEmail.text.toString()
+                    val pass = textPass.text.toString()
+                    when {
+                        validateEmail(textEmail) && validatePassword(textPass) -> {
+                            signIn(email, pass)
+                        }
+                    }
                 }
             }
         }
+        return loginView
     }
 
     private fun checkPasswords(password: TextView, passwordRepeat: TextView): Boolean {
-        val error = "Passwords does not match!"
+        val error = getString(R.string.not_match)
 
-        return if (password.text.toString() == passwordRepeat.text.toString()) true
-        else {
-            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-            passwordRepeat.error = error
-
-            false
+        return when {
+            password.text.toString() == passwordRepeat.text.toString() -> true
+            else -> {
+                Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+                passwordRepeat.error = error
+                false
+            }
         }
     }
 
     private fun validatePassword(password: TextView): Boolean {
-        val error = "Password must be minimum 6 symbols!"
+        val error = getString(R.string.invalid_password)
 
-        return if (password.text.toString().length < 6) {
-            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-            password.error = error
-            false
-        } else true
+        return when {
+            password.text.toString().length < 6 && loginButton.visibility == GONE -> {
+                Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+                password.error = error
+                false
+            }
+            else -> true
+        }
     }
 
     private fun validateEmail(email: TextView): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        var error = ""
+        val error = getString(R.string.invalid_email)
 
-        return if (email.text.toString().isEmpty()) {
-            error = "Invalid email address"
-            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-            email.error = error
-            false
-        } else {
-            if (email.text.toString().trim { it <= ' ' }.matches(emailPattern.toRegex())) {
-                true
-            } else {
-                error = "Invalid email address"
-                Toast.makeText(context, error, Toast.LENGTH_SHORT)
-                    .show()
+        return when {
+            email.text.toString().isEmpty() -> {
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                 email.error = error
                 false
+            }
+            else -> {
+                when {
+                    email.text.toString().trim { it <= ' ' }.matches(emailPattern.toRegex()) -> true
+                    else -> {
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+                        email.error = error
+                        false
+                    }
+                }
             }
         }
     }
@@ -121,51 +161,51 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
     private fun updateUiState(user: FirebaseUser?) {
         user?.let {
             loginButton.text = getString(R.string.log_out)
-            textEmail.visibility = View.GONE
-            textPass.visibility = View.GONE
-            registerButton.visibility = View.GONE
+            textEmail.visibility = GONE
+            textPass.visibility = GONE
+            registerButton.visibility = GONE
 
         } ?: run {
-            loginButton.text = getString(R.string.log_in)
-            textEmail.visibility = View.VISIBLE
-            textPass.visibility = View.VISIBLE
+            loginButton.text = getString(R.string.sign_in)
+            textEmail.visibility = VISIBLE
+            textPass.visibility = VISIBLE
         }
     }
 
     private fun register(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener() { task ->
-                if (task.isSuccessful) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+            when {
+                it.isSuccessful -> {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
                     Toast.makeText(context, "Hello, ${user?.email}", Toast.LENGTH_LONG).show()
                     findNavController().popBackStack()
-                } else {
+                }
+                else -> {
                     // If registration fails, display a message to the user.
-                    Log.w("registration", "createUserWithEmail:failure", task.exception)
-
-                    Toast.makeText(
-                        context, "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context, getString(R.string.failed_register), Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
-
+        }
     }
 
     private fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener() {task ->
-                if (task.isSuccessful) {
+        val error = getString(R.string.failed_login)
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+            when {
+                it.isSuccessful -> {
                     val user = auth.currentUser
                     Toast.makeText(context, "Hello, ${user?.email}", Toast.LENGTH_LONG).show()
                     findNavController().popBackStack()
-                } else {
+                }
+                else -> {
                     // If sign in fails, display a message to the user.
-                    Log.w("singIn", "signInWithEmail:failure", task.exception)
-                    Toast.makeText(context, task.exception.toString(),
-                        Toast.LENGTH_SHORT).show()
+                    textEmail.error = error
+                    textPass.error = error
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                 }
             }
+        }
     }
 }
