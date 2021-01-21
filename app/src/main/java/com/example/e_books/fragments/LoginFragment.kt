@@ -44,7 +44,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         textEmail = loginView.findViewById(R.id.textEmail)
         textPass = loginView.findViewById(R.id.textPass)
         textPassRepeat = loginView.findViewById(R.id.textPassRepeat)
-        textPassRepeat.visibility = GONE
         loginButton = loginView.findViewById(R.id.loginButton)
         registerButton = loginView.findViewById(R.id.registerButton)
 

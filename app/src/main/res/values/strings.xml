@@ -33,4 +33,7 @@
     <string name="invalid_email">Invalid email address</string>
     <string name="failed_register">Authentication failed.</string>
     <string name="failed_login">Username or password is not correct</string>
+    <string name="new_user">New User?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="back_to_login">Back to Login</string>
 </resources>
