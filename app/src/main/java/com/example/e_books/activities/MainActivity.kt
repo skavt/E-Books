@@ -21,6 +21,12 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnNavigationItemSelectedListener(navListener)
+
+        when (savedInstanceState) {
+            null -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment, CategoryFragment())
+                .commit()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -29,13 +35,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        var selectedFragment: Fragment? = null
 
-        val selectedFragment: Fragment? = when (item.itemId) {
-            R.id.nav_home -> CategoryFragment()
+        when (item.itemId) {
+            R.id.nav_home -> selectedFragment = CategoryFragment()
             // TODO add nav fragments
-            else -> null
         }
-
         when {
             selectedFragment != null -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment, selectedFragment)
