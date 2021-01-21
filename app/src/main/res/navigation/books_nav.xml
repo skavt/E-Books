@@ -9,13 +9,28 @@
         android:id="@+id/category_fragment"
         android:name="com.example.e_books.fragments.CategoryFragment"
         tools:layout="@layout/category_fragment">
+        <action
+            android:id="@+id/action_category_to_see_more"
+            app:destination="@id/category_details_fragment" />
 
+        <action
+            android:id="@+id/action_category_to_book_details"
+            app:destination="@id/book_details_fragment" />
+
+        <action
+            android:id="@+id/action_category_to_login"
+            app:destination="@id/login_fragment" />
     </fragment>
     <fragment
         android:id="@+id/category_details_fragment"
         android:name="com.example.e_books.fragments.CategoryDetailsFragment"
         tools:layout="@layout/category_details_fragment">
-
+        <action
+            android:id="@+id/action_see_more_to_category"
+            app:destination="@id/category_fragment" />
+        <action
+            android:id="@+id/action_see_more_to_book_details"
+            app:destination="@id/book_details_fragment" />
     </fragment>
     <fragment
         android:id="@+id/book_details_fragment"
@@ -23,4 +38,14 @@
         tools:layout="@layout/book_details_fragment">
 
     </fragment>
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.example.e_books.fragments.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/action_login_to_category"
+            app:destination="@id/category_fragment" />
+    </fragment>
+
 </navigation>

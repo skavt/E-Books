@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import androidx.navigation.navGraphViewModels
 import com.bumptech.glide.Glide
 import com.example.e_books.R
