@@ -1,11 +1,9 @@
 package com.example.e_books.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -18,6 +16,7 @@ import com.example.e_books.extentions.castCategoryData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,7 +29,7 @@ import kotlinx.android.synthetic.main.category_fragment.*
 
 class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.OnItemClickListener {
 
-    private val auth = Firebase.auth
+    private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var categoryView: View
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
@@ -39,39 +38,35 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        val navController = findNavController()
-
-        if (auth.currentUser == null) {
-            navController.navigate(R.id.login_fragment)
-            return view
-        } else {
-            Toast.makeText(context, "Welcome, ${auth.currentUser!!.email}", Toast.LENGTH_LONG)
-                .show()
-        }
-
+    ): View {
         categoryView = inflater.inflate(R.layout.category_fragment, container, false)
         (activity as AppCompatActivity).title = getString(R.string.app_name)
         setHasOptionsMenu(true)
 
-        db = Firebase.database
+        auth = Firebase.auth
 
-        db.reference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.forEach {
-                    val memberList = it.value as ArrayList<*>
-                    category_item.layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    category_item.adapter =
-                        CategoryAdapter(castCategoryData(memberList), this@CategoryFragment)
-                }
-            }
+        when (auth.currentUser) {
+            null -> findNavController().navigate(R.id.action_category_to_login)
+            else -> {
+                db = Firebase.database
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                db.reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        dataSnapshot.children.forEach {
+                            val memberList = it.value as ArrayList<*>
+                            category_item.layoutManager =
+                                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                            category_item.adapter =
+                                CategoryAdapter(castCategoryData(memberList), this@CategoryFragment)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
             }
-        })
+        }
         return categoryView
     }
 
