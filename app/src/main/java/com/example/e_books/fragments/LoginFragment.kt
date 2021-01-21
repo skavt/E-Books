@@ -1,5 +1,6 @@
 package com.example.e_books.fragments
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +30,10 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
     private lateinit var textPass: TextView
     private lateinit var textPassRepeat: TextView
     private lateinit var loginView: View
+    private lateinit var signUpText: TextView
+    private lateinit var loginText: TextView
+    private lateinit var formTitle: TextView
+    private lateinit var newUserText: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,40 +52,73 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         textPassRepeat = loginView.findViewById(R.id.textPassRepeat)
         loginButton = loginView.findViewById(R.id.loginButton)
         registerButton = loginView.findViewById(R.id.registerButton)
+        signUpText = loginView.findViewById(R.id.sign_up_text)
+        loginText = loginView.findViewById(R.id.login_text)
+        formTitle = loginView.findViewById(R.id.form_title)
+        newUserText = loginView.findViewById(R.id.new_user)
 
         auth = Firebase.auth
 
         updateUiState(auth.currentUser)
 
         auth.signOut()
-        registerButton.setOnClickListener {
+        signUpText.setOnClickListener {
+            formTitle.text = getString(R.string.sign_up)
             (activity as AppCompatActivity).apply {
                 title = getString(R.string.register)
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
 
-            when (textPassRepeat.visibility) {
-                VISIBLE -> {
-                    val email = textEmail.text.toString()
-                    val password = textPass.text.toString()
-                    when {
-                        validateEmail(textEmail) && validatePassword(textPass) &&
-                                checkPasswords(textPass, textPassRepeat) -> {
-                            register(email, password)
-                        }
-                    }
-                }
-                else -> {
-                    textPassRepeat.visibility = VISIBLE
-                    loginButton.visibility = GONE
-                    textEmail.apply {
-                        text = ""
-                        error = null
-                    }
-                    textPass.apply {
-                        text = ""
-                        error = null
-                    }
+            textPassRepeat.visibility = VISIBLE
+            loginButton.visibility = GONE
+            registerButton.visibility = VISIBLE
+            newUserText.visibility = GONE
+            loginText.visibility = VISIBLE
+
+            textEmail.apply {
+                text = ""
+                error = null
+            }
+            textPass.apply {
+                text = ""
+                error = null
+            }
+        }
+
+        loginText.setOnClickListener {
+            formTitle.text = getString(R.string.sign_in)
+            (activity as AppCompatActivity).apply {
+                title = getString(R.string.sign_in)
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            }
+
+            textPassRepeat.visibility = GONE
+            loginButton.visibility = VISIBLE
+            registerButton.visibility = GONE
+            newUserText.visibility = VISIBLE
+            loginText.visibility = GONE
+
+            textEmail.apply {
+                text = ""
+                error = null
+            }
+            textPass.apply {
+                text = ""
+                error = null
+            }
+            textPassRepeat.apply {
+                text = ""
+                error = null
+            }
+        }
+
+        registerButton.setOnClickListener {
+            val email = textEmail.text.toString()
+            val password = textPass.text.toString()
+            when {
+                validateEmail(textEmail) && validatePassword(textPass) &&
+                        checkPasswords(textPass, textPassRepeat) -> {
+                    register(email, password)
                 }
             }
         }
