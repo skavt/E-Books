@@ -2,6 +2,7 @@ package com.example.e_books.fragments
 
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -78,10 +79,12 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
             textEmail.apply {
                 text = ""
                 error = null
+                clearFocus()
             }
             textPass.apply {
                 text = ""
                 error = null
+                clearFocus()
             }
         }
 
@@ -101,14 +104,17 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
             textEmail.apply {
                 text = ""
                 error = null
+                clearFocus()
             }
             textPass.apply {
                 text = ""
                 error = null
+                clearFocus()
             }
             textPassRepeat.apply {
                 text = ""
                 error = null
+                clearFocus()
             }
         }
 
@@ -157,12 +163,18 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
     }
 
     private fun validatePassword(password: TextView): Boolean {
-        val error = getString(R.string.invalid_password)
+        val lengthError = getString(R.string.invalid_password)
+        val emptyError = getString(R.string.empty_password)
 
         return when {
+            password.text.isEmpty() -> {
+                Toast.makeText(context, emptyError, Toast.LENGTH_LONG).show()
+                password.error = emptyError
+                false
+            }
             password.text.toString().length < 6 && loginButton.visibility == GONE -> {
-                Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-                password.error = error
+                Toast.makeText(context, lengthError, Toast.LENGTH_LONG).show()
+                password.error = lengthError
                 false
             }
             else -> true
@@ -171,20 +183,21 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
     private fun validateEmail(email: TextView): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        val error = getString(R.string.invalid_email)
+        val invalidError = getString(R.string.invalid_email)
+        val requiredError = getString(R.string.empty_email)
 
         return when {
             email.text.toString().isEmpty() -> {
-                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-                email.error = error
+                Toast.makeText(context, requiredError, Toast.LENGTH_SHORT).show()
+                email.error = requiredError
                 false
             }
             else -> {
                 when {
                     email.text.toString().trim { it <= ' ' }.matches(emailPattern.toRegex()) -> true
                     else -> {
-                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-                        email.error = error
+                        Toast.makeText(context, invalidError, Toast.LENGTH_SHORT).show()
+                        email.error = invalidError
                         false
                     }
                 }

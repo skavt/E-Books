@@ -30,7 +30,9 @@
 
     <string name="not_match">Passwords does not match!</string>
     <string name="invalid_password">Password must be minimum 6 symbols!</string>
+    <string name="empty_password">Password is required</string>
     <string name="invalid_email">Invalid email address</string>
+    <string name="empty_email">Email is required</string>
     <string name="failed_register">Authentication failed.</string>
     <string name="failed_login">Username or password is not correct</string>
     <string name="new_user">New User?</string>
