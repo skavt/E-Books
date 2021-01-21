@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
 import com.example.e_books.extentions.castCategoryData
@@ -24,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.category_fragment.*
 
 
 class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.OnItemClickListener {
@@ -32,6 +32,7 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var categoryView: View
+    private lateinit var categoryItem: RecyclerView
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -49,14 +50,15 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
             null -> findNavController().navigate(R.id.action_category_to_login)
             else -> {
                 db = Firebase.database
+                categoryItem = categoryView.findViewById(R.id.category_item)
 
                 db.reference.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         dataSnapshot.children.forEach {
                             val memberList = it.value as ArrayList<*>
-                            category_item.layoutManager =
+                            categoryItem.layoutManager =
                                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                            category_item.adapter =
+                            categoryItem.adapter =
                                 CategoryAdapter(castCategoryData(memberList), this@CategoryFragment)
                         }
                     }
