@@ -42,10 +42,8 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         savedInstanceState: Bundle?
     ): View {
         loginView = inflater.inflate(R.layout.login_fragment, container, false)
-        (activity as AppCompatActivity).apply {
-            title = getString(R.string.sign_in)
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        }
+        (activity as AppCompatActivity).supportActionBar?.hide()
+
         setHasOptionsMenu(true)
 
         textEmail = loginView.findViewById(R.id.textEmail)
@@ -65,10 +63,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         auth.signOut()
         signUpText.setOnClickListener {
             formTitle.text = getString(R.string.sign_up)
-            (activity as AppCompatActivity).apply {
-                title = getString(R.string.register)
-                supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            }
 
             textPassRepeat.visibility = VISIBLE
             loginButton.visibility = GONE
@@ -90,10 +84,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
         loginText.setOnClickListener {
             formTitle.text = getString(R.string.sign_in)
-            (activity as AppCompatActivity).apply {
-                title = getString(R.string.sign_in)
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            }
 
             textPassRepeat.visibility = GONE
             loginButton.visibility = VISIBLE

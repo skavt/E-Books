@@ -41,7 +41,11 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         savedInstanceState: Bundle?
     ): View {
         categoryView = inflater.inflate(R.layout.category_fragment, container, false)
-        (activity as AppCompatActivity).title = getString(R.string.app_name)
+        (activity as AppCompatActivity).apply {
+            supportActionBar?.show()
+            title = getString(R.string.app_name)
+        }
+
         setHasOptionsMenu(true)
 
         auth = Firebase.auth
