@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.bumptech.glide.Glide
 import com.example.e_books.R
@@ -31,6 +33,7 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
         val bookAuthor = bookDetailsView.findViewById<TextView>(R.id.book_details_author)
         val bookPageNumbers = bookDetailsView.findViewById<TextView>(R.id.book_details_page_numbers)
         val image = bookDetailsView.findViewById<ImageView>(R.id.book_details_image)
+        val readerButton = bookDetailsView.findViewById<Button>(R.id.read_button)
 
         bookLiveData.bookData.observe(viewLifecycleOwner, { book ->
             with(book) {
@@ -40,6 +43,9 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
                 bookAuthor.text = author
                 bookPageNumbers.text = pageNumbers
                 context?.let { Glide.with(it).load(imageUrl).into(image) }
+                readerButton.setOnClickListener {
+                    findNavController().navigate(R.id.pdf_view_fragment)
+                }
             }
         })
 
