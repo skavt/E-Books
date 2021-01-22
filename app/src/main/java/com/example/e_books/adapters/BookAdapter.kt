@@ -15,6 +15,8 @@ class BookAdapter(
 ) :
     RecyclerView.Adapter<BookAdapter.ViewHolder>() {
 
+    private val listSize = 5
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.category_book_item, parent, false)
     )
@@ -23,7 +25,10 @@ class BookAdapter(
         holder.setContent(bookList[position])
     }
 
-    override fun getItemCount(): Int = 5
+    override fun getItemCount(): Int = when {
+        bookList.size < listSize -> bookList.size
+        else -> listSize
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
