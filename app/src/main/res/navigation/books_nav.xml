@@ -45,6 +45,12 @@
 
     </fragment>
     <fragment
+        android:id="@+id/favorites_fragment"
+        android:name="com.example.e_books.fragments.PdfViewFragment"
+        tools:layout="@layout/favorites_fragment">
+
+    </fragment>
+    <fragment
         android:id="@+id/login_fragment"
         android:name="com.example.e_books.fragments.LoginFragment"
         android:label="login_fragment"

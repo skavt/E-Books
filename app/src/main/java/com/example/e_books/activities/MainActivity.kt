@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.nav_home -> findNavController(R.id.fragment).navigate(R.id.category_fragment)
+            R.id.nav_favorite -> findNavController(R.id.fragment).navigate(R.id.favorites_fragment)
             // TODO add nav fragments
         }
         true
