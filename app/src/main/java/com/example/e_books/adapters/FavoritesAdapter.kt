@@ -7,13 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.e_books.R
 import com.example.e_books.model.Books
-import com.example.e_books.model.Category
-import com.example.e_books.model.FavoriteBooks
 import kotlinx.android.synthetic.main.favorites_item.view.*
 
 class FavoritesAdapter(
-    private val bookList: ArrayList<FavoriteBooks>,
-    private val listener: OnFavItemClickListener
+    private val bookList: ArrayList<Books>,
+    private val listener: CategoryAdapter.OnItemClickListener
 ) :
     RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
 
@@ -29,22 +27,18 @@ class FavoritesAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun setContent(book: FavoriteBooks) {
+        fun setContent(book: Books) {
             with(book) {
                 itemView.favorites_name.text = name
                 itemView.favorites_author.text = author
                 itemView.favorites_description.text = description
                 Glide.with(itemView.context).load(imageUrl).into(itemView.favorites_book_image)
 
-                itemView.favorites_book_image.setOnClickListener {
+                itemView.setOnClickListener {
                     listener.onBookClick(book)
                 }
 
             }
         }
-    }
-
-    interface OnFavItemClickListener {
-        fun onBookClick(book: FavoriteBooks)
     }
 }

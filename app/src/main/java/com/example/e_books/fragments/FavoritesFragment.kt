@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
 import com.example.e_books.adapters.FavoritesAdapter
-import com.example.e_books.extentions.castFavoritesData
+import com.example.e_books.extentions.castBookData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
-import com.example.e_books.model.FavoriteBooks
 import com.example.e_books.services.BookLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -28,17 +27,14 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FavoritesFragment : Fragment(R.layout.favorites_fragment),
-    FavoritesAdapter.OnFavItemClickListener {
+    CategoryAdapter.OnItemClickListener {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var favoritesView: View
     private lateinit var db: FirebaseDatabase
     private lateinit var favoriteItem: RecyclerView
-    lateinit var data: HashMap<*, *>
-    val favoriteBookList = ArrayList<FavoriteBooks>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -75,7 +71,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                                                 false
                                             )
                                             favoriteItem.adapter = FavoritesAdapter(
-                                                castFavoritesData(userUid.value as ArrayList<*>),
+                                                castBookData(userUid.value as ArrayList<*>),
                                                 this@FavoritesFragment
                                             )
                                         }
@@ -95,8 +91,12 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
         return favoritesView
     }
 
-    override fun onBookClick(book: FavoriteBooks) {
-        bookLiveData.setFavoriteBook(book)
+    override fun onSeeMoreClick(category: Category) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBookClick(book: Books) {
+        bookLiveData.setBook(book)
         favoritesView.findNavController().navigate(R.id.book_details_fragment)
     }
 }
