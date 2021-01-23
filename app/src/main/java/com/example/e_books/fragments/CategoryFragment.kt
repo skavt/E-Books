@@ -3,6 +3,7 @@ package com.example.e_books.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.example.e_books.extentions.castCategoryData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -48,6 +50,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
             supportActionBar?.show()
             title = getString(R.string.app_name)
         }
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation)
+        navBar.visibility = VISIBLE
 
         setHasOptionsMenu(true)
 
