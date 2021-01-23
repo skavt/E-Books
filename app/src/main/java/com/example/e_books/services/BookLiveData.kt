@@ -31,11 +31,11 @@ class BookLiveData : ViewModel() {
         _categoryData.postValue(category)
     }
 
-    fun setBooks(tasks: List<Books>?) {
-        _booksLiveData.postValue(tasks)
+    fun setBooks(books: List<Books>?) {
+        _booksLiveData.postValue(books)
     }
 
-    fun setFavBooks(tasks: List<Books>?) {
-        _favBooksLiveData.postValue(tasks)
+    fun setFavBooks(books: List<Books>?) {
+        _favBooksLiveData.postValue(books)
     }
 }

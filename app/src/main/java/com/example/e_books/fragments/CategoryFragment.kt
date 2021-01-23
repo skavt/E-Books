@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
-import com.example.e_books.extentions.castBookData
 import com.example.e_books.extentions.castCategoryData
+import com.example.e_books.extentions.castFavBookData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
@@ -37,8 +37,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var db: FirebaseDatabase
     private lateinit var categoryView: View
     private lateinit var categoryItem: RecyclerView
-    lateinit var data: HashMap<*, *>
-    val categoryList = ArrayList<Category>()
+    private val categoryList = ArrayList<Category>()
+    private val bookList = ArrayList<Books>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -68,8 +68,7 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             dataSnapshot.children.forEach {
-                                data = it.value as HashMap<*, *>
-                                categoryList.add(castCategoryData(data))
+                                categoryList.add(castCategoryData(it.value as HashMap<*, *>))
                             }
                             categoryItem.layoutManager = LinearLayoutManager(
                                 context,
@@ -91,15 +90,13 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             dataSnapshot.children.forEach {
-                                auth.currentUser?.uid?.let { it1 ->
-                                    val userUid = it.child(it1)
-                                    when {
-                                        userUid.exists() -> {
-                                            bookLiveData.setFavBooks(castBookData(userUid.value as ArrayList<*>))
-                                        }
+                                if (auth.currentUser?.uid == it.key) {
+                                    it.children.forEach { book ->
+                                        bookList.add(castFavBookData(book.value as HashMap<*, *>))
                                     }
                                 }
                             }
+                            bookLiveData.setFavBooks(bookList)
                         }
 
                         override fun onCancelled(error: DatabaseError) {
@@ -108,6 +105,7 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                     })
             }
         }
+
         return categoryView
     }
 

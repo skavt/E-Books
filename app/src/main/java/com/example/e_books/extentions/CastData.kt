@@ -11,6 +11,19 @@ fun castCategoryData(categoryData: java.util.HashMap<*, *>): Category {
     return Category(id, categoryName, castBookData(books))
 }
 
+fun castFavBookData(favData: java.util.HashMap<*, *>): Books {
+
+    val bookId = favData["book_id"].toString().toInt()
+    val name = favData["name"].toString()
+    val author = favData["author"].toString()
+    val description = favData["description"].toString()
+    val bookUrl = favData["bookUrl"].toString()
+    val imageUrl = favData["imageUrl"].toString()
+    val pageNumbers = favData["pageNumbers"].toString()
+
+    return Books(bookId, name, author, description, bookUrl, imageUrl, pageNumbers)
+}
+
 fun castBookData(bookData: ArrayList<*>): ArrayList<Books> {
     val size = bookData.size
     var index = 0
