@@ -11,6 +11,10 @@ class BookLiveData : ViewModel() {
     val booksLiveData: LiveData<List<Books>>
         get() = _booksLiveData
 
+    private val _favBooksLiveData = MutableLiveData<List<Books>>()
+    val favBooksLiveData: LiveData<List<Books>>
+        get() = _favBooksLiveData
+
     private val _bookData = MutableLiveData<Books>()
     val bookData: LiveData<Books>
         get() = _bookData
@@ -29,5 +33,9 @@ class BookLiveData : ViewModel() {
 
     fun setBooks(tasks: List<Books>?) {
         _booksLiveData.postValue(tasks)
+    }
+
+    fun setFavBooks(tasks: List<Books>?) {
+        _favBooksLiveData.postValue(tasks)
     }
 }

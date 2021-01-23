@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     CategoryAdapter.OnItemClickListener {
@@ -35,6 +36,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     private lateinit var favoritesView: View
     private lateinit var db: FirebaseDatabase
     private lateinit var favoriteItem: RecyclerView
+    private lateinit var bookList: ArrayList<Books>
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -65,13 +67,14 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                                     val userUid = it.child(it1)
                                     when {
                                         userUid.exists() -> {
+                                            bookList = castBookData(userUid.value as ArrayList<*>)
                                             favoriteItem.layoutManager = LinearLayoutManager(
                                                 context,
                                                 LinearLayoutManager.VERTICAL,
                                                 false
                                             )
                                             favoriteItem.adapter = FavoritesAdapter(
-                                                castBookData(userUid.value as ArrayList<*>),
+                                                bookList,
                                                 this@FavoritesFragment
                                             )
                                         }
@@ -97,6 +100,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
 
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)
+        bookLiveData.setFavBooks(bookList)
         favoritesView.findNavController().navigate(R.id.book_details_fragment)
     }
 }
