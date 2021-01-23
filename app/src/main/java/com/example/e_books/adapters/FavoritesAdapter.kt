@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
-import com.example.e_books.model.Books
+import com.example.e_books.model.FavoriteBooks
 import kotlinx.android.synthetic.main.favorites_item.view.*
 
 class FavoritesAdapter(
-    private val bookList: ArrayList<Books>,
+    private val bookList: ArrayList<FavoriteBooks>,
     private val listener: CategoryAdapter.OnItemClickListener
 ) :
     RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
@@ -26,7 +26,7 @@ class FavoritesAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun setContent(book: Books) {
+        fun setContent(book: FavoriteBooks) {
             with(book) {
                 itemView.favorites_name.text = name
 //                Glide.with(itemView.context).load(imageUrl).into(itemView.book_image)
