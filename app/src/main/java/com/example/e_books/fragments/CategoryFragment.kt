@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
+import com.example.e_books.extentions.castBookData
 import com.example.e_books.extentions.castCategoryData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
@@ -79,6 +80,26 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                                 categoryList,
                                 this@CategoryFragment
                             )
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+
+                db.reference.child("favorites")
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            dataSnapshot.children.forEach {
+                                auth.currentUser?.uid?.let { it1 ->
+                                    val userUid = it.child(it1)
+                                    when {
+                                        userUid.exists() -> {
+                                            bookLiveData.setFavBooks(castBookData(userUid.value as ArrayList<*>))
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         override fun onCancelled(error: DatabaseError) {
