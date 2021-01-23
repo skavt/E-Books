@@ -79,11 +79,10 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
         })
 
         addToFav.setOnClickListener {
-            val key = db.reference.child("favorites/${auth.currentUser?.uid}").push().key
             val data = bookLiveData.bookData.value as Books
 
             val childUpdates = hashMapOf<String, Any>(
-                "/favorites/${auth.currentUser?.uid}/$key" to data,
+                "/favorites/${auth.currentUser?.uid}/$bookId" to data,
             )
 
             db.reference.updateChildren(childUpdates)
@@ -93,6 +92,8 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
         }
 
         removeFromFav.setOnClickListener {
+            db.reference.child("/favorites/${auth.currentUser?.uid}/$bookId").removeValue()
+
             addToFav.visibility = VISIBLE
             removeFromFav.visibility = GONE
         }
