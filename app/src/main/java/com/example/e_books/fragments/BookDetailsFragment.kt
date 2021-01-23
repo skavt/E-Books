@@ -67,10 +67,15 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
             }
         })
 
-//        favButton.setOnClickListener {
-//            favButton.setBackgroundResource(R.drawable.ic_baseline_favorite_24_black);
-//        }
+        addToFav.setOnClickListener {
+            addToFav.visibility = GONE
+            removeFromFav.visibility = VISIBLE
+        }
 
+        removeFromFav.setOnClickListener {
+            addToFav.visibility = VISIBLE
+            removeFromFav.visibility = GONE
+        }
 
         return bookDetailsView
     }
