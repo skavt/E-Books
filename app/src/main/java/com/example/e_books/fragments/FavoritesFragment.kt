@@ -3,7 +3,10 @@ package com.example.e_books.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -35,6 +38,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     private lateinit var favoritesView: View
     private lateinit var db: FirebaseDatabase
     private lateinit var favoriteItem: RecyclerView
+    private lateinit var noData: LinearLayout
     private var bookList = ArrayList<Books>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
@@ -46,9 +50,11 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
         favoritesView = inflater.inflate(R.layout.favorites_fragment, container, false)
         (activity as AppCompatActivity).apply {
             supportActionBar?.show()
-            title = getString(R.string.favorite)
+            title = getString(R.string.favorites)
         }
         setHasOptionsMenu(true)
+
+        noData = favoritesView.findViewById(R.id.no_fav_data)
 
         auth = Firebase.auth
 
@@ -62,9 +68,15 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             dataSnapshot.children.forEach {
-                                if (auth.currentUser?.uid == it.key) {
-                                    it.children.forEach { book ->
-                                        bookList.add(castFavBookData(book.value as HashMap<*, *>))
+                                when {
+                                    it.exists() -> noData.visibility = GONE
+                                    else -> noData.visibility = VISIBLE
+                                }
+                                when (auth.currentUser?.uid) {
+                                    it.key -> {
+                                        it.children.forEach { book ->
+                                            bookList.add(castFavBookData(book.value as HashMap<*, *>))
+                                        }
                                     }
                                 }
                             }
@@ -77,7 +89,6 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                                 bookList,
                                 this@FavoritesFragment
                             )
-                            // TODO add no data fragment
                             bookLiveData.setFavBooks(bookList)
                         }
 

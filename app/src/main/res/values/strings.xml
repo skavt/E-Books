@@ -43,4 +43,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="back_to_login">Back to Login</string>
     <string name="read_now">წაკითხვა</string>
+    <string name="not_found">თქვენი სია ცარიელია</string>
+    <string name="sorry">ვწუხვარ,</string>
+    <string name="favorites">რჩეული წიგნები</string>
 </resources>
