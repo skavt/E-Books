@@ -68,13 +68,13 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             dataSnapshot.children.forEach {
-                                when {
-                                    it.exists() -> noData.visibility = GONE
-                                    else -> noData.visibility = VISIBLE
-                                }
                                 when (auth.currentUser?.uid) {
                                     it.key -> {
                                         it.children.forEach { book ->
+                                            when {
+                                                book.exists() -> noData.visibility = GONE
+                                                else -> noData.visibility = VISIBLE
+                                            }
                                             bookList.add(castFavBookData(book.value as HashMap<*, *>))
                                         }
                                     }

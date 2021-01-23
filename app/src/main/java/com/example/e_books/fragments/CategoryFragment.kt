@@ -1,10 +1,12 @@
 package com.example.e_books.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -37,10 +39,12 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var db: FirebaseDatabase
     private lateinit var categoryView: View
     private lateinit var categoryItem: RecyclerView
+    private lateinit var logOut: Button
     private val categoryList = ArrayList<Category>()
     private val bookList = ArrayList<Books>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
+    @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,6 +61,7 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         setHasOptionsMenu(true)
 
         auth = Firebase.auth
+        logOut = categoryView.findViewById(R.id.log_out)
 
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.action_category_to_login)
@@ -103,6 +108,12 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                             TODO("Not yet implemented")
                         }
                     })
+
+                // TODO Delete this code after add user page
+                logOut.setOnClickListener {
+                    auth.signOut()
+                    findNavController().navigate(R.layout.login_fragment)
+                }
             }
         }
 
