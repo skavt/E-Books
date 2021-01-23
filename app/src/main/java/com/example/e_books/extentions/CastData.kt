@@ -3,21 +3,12 @@ package com.example.e_books.extentions
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 
-fun castCategoryData(categoryData: ArrayList<*>): ArrayList<Category> {
-    val size = categoryData.size
-    var index = 0
-    val categoryList = ArrayList<Category>()
+fun castCategoryData(categoryData: java.util.HashMap<*, *>): Category {
+    val id = categoryData["id"].toString().toInt()
+    val categoryName = categoryData["category_name"].toString()
+    val books = categoryData["books"] as ArrayList<*>
 
-    while (index < size) {
-        val mapCategoryData: HashMap<*, *> = categoryData[index] as HashMap<*, *>
-        val id = mapCategoryData["id"].toString().toInt()
-        val categoryName = mapCategoryData["category_name"].toString()
-        val books = mapCategoryData["books"] as ArrayList<*>
-
-        categoryList.add(Category(id, categoryName, castBookData(books)))
-        index++
-    }
-    return categoryList
+    return Category(id, categoryName, castBookData(books))
 }
 
 fun castBookData(bookData: ArrayList<*>): ArrayList<Books> {

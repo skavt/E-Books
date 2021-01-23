@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
+import com.example.e_books.extentions.castBookData
 import com.example.e_books.extentions.castCategoryData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 
 class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.OnItemClickListener {
@@ -33,6 +35,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var db: FirebaseDatabase
     private lateinit var categoryView: View
     private lateinit var categoryItem: RecyclerView
+    lateinit var data: HashMap<*, *>
+    val categoryList = ArrayList<Category>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -56,21 +60,28 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                 db = Firebase.database
                 categoryItem = categoryView.findViewById(R.id.category_item)
 
-                db.reference.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        dataSnapshot.children.forEach {
-                            val memberList = it.value as ArrayList<*>
-                            categoryItem.layoutManager =
-                                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                            categoryItem.adapter =
-                                CategoryAdapter(castCategoryData(memberList), this@CategoryFragment)
+                db.reference.child("categories")
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            dataSnapshot.children.forEach {
+                                data = it.value as HashMap<*, *>
+                                categoryList.add(castCategoryData(data))
+                            }
+                            categoryItem.layoutManager = LinearLayoutManager(
+                                context,
+                                LinearLayoutManager.VERTICAL,
+                                false
+                            )
+                            categoryItem.adapter = CategoryAdapter(
+                                categoryList,
+                                this@CategoryFragment
+                            )
                         }
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
-                })
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
             }
         }
         return categoryView

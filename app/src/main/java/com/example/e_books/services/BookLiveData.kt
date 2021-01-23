@@ -19,6 +19,10 @@ class BookLiveData : ViewModel() {
     val categoryData: LiveData<Category>
         get() = _categoryData
 
+    private val _favoriteData = MutableLiveData<Books>()
+    val favoriteData: LiveData<Books>
+        get() = _favoriteData
+
     fun setBook(book: Books?) {
         _bookData.postValue(book)
     }
@@ -27,7 +31,7 @@ class BookLiveData : ViewModel() {
         _categoryData.postValue(category)
     }
 
-    fun setBooks(tasks: List<Books>?) {
-        _booksLiveData.postValue(tasks)
+    fun setFavoriteBook(book: Books?) {
+        _favoriteData.postValue(book)
     }
 }
