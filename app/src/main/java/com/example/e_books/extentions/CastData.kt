@@ -19,15 +19,15 @@ fun castFavoritesData(favoritesData: ArrayList<*>): ArrayList<FavoriteBooks> {
 
     while (index < size) {
         val mapBookData: HashMap<*, *> = favoritesData[index] as HashMap<*, *>
-//        val bookId = mapBookData["book_id"].toString().toInt()
+        val bookId = mapBookData["book_id"].toString().toInt()
         val name = mapBookData["name"].toString()
-//        val author = mapBookData["author"].toString()
-//        val description = mapBookData["description"].toString()
-//        val bookUrl = mapBookData["bookUrl"].toString()
-//        val imageUrl = mapBookData["imageUrl"].toString()
-//        val pageNumbers = mapBookData["pageNumbers"].toString()
+        val author = mapBookData["author"].toString()
+        val description = mapBookData["description"].toString()
+        val bookUrl = mapBookData["bookUrl"].toString()
+        val imageUrl = mapBookData["imageUrl"].toString()
+        val pageNumbers = mapBookData["pageNumbers"].toString()
 
-        bookList.add(FavoriteBooks(name))
+        bookList.add(FavoriteBooks(bookId, name, author, description, bookUrl, imageUrl, pageNumbers))
         index++
     }
     return bookList

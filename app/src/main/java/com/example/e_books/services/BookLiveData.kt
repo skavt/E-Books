@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
+import com.example.e_books.model.FavoriteBooks
 
 class BookLiveData : ViewModel() {
     private val _booksLiveData = MutableLiveData<List<Books>>()
@@ -19,8 +20,8 @@ class BookLiveData : ViewModel() {
     val categoryData: LiveData<Category>
         get() = _categoryData
 
-    private val _favoriteData = MutableLiveData<Books>()
-    val favoriteData: LiveData<Books>
+    private val _favoriteData = MutableLiveData<FavoriteBooks>()
+    val favoriteData: LiveData<FavoriteBooks>
         get() = _favoriteData
 
     fun setBook(book: Books?) {
@@ -31,7 +32,7 @@ class BookLiveData : ViewModel() {
         _categoryData.postValue(category)
     }
 
-    fun setFavoriteBook(book: Books?) {
+    fun setFavoriteBook(book: FavoriteBooks?) {
         _favoriteData.postValue(book)
     }
 }

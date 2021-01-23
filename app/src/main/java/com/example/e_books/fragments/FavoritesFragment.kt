@@ -31,7 +31,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class FavoritesFragment : Fragment(R.layout.favorites_fragment),
-    CategoryAdapter.OnItemClickListener {
+    FavoritesAdapter.OnFavItemClickListener {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var favoritesView: View
@@ -95,12 +95,8 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
         return favoritesView
     }
 
-    override fun onSeeMoreClick(category: Category) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onBookClick(book: Books) {
+    override fun onBookClick(book: FavoriteBooks) {
         bookLiveData.setFavoriteBook(book)
-        favoritesView.findNavController().navigate(R.id.favorites_fragment)
+        favoritesView.findNavController().navigate(R.id.book_details_fragment)
     }
 }
