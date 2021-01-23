@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
-import com.example.e_books.extentions.castBookData
 import com.example.e_books.extentions.castCategoryData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category

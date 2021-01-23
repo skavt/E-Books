@@ -1,8 +1,6 @@
 package com.example.e_books.fragments
 
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -16,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.e_books.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -43,6 +42,9 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
     ): View {
         loginView = inflater.inflate(R.layout.login_fragment, container, false)
         (activity as AppCompatActivity).supportActionBar?.hide()
+        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation)
+        navBar.visibility = GONE
+
 
         setHasOptionsMenu(true)
 
