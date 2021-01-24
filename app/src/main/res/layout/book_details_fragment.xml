@@ -93,7 +93,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/author"
+                            android:text="@string/_author"
                             android:textColor="@color/white" />
 
                         <TextView
@@ -115,7 +115,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/page_numbers"
+                            android:text="@string/_page_numbers"
                             android:textColor="@color/white" />
 
                         <TextView
@@ -138,7 +138,7 @@
                             android:layout_width="120dp"
                             android:layout_height="50dp"
                             android:background="@drawable/read_button"
-                            android:text="@string/read_now"
+                            android:text="@string/_read_now"
                             android:theme="@style/formButton" />
 
                         <ImageView

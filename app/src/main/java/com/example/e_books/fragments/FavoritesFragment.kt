@@ -52,7 +52,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     ): View {
         favoritesView = inflater.inflate(R.layout.favorites_fragment, container, false)
         (activity as AppCompatActivity).apply {
-            title = getString(R.string.favorites)
+            title = getString(R.string._favorites)
             supportActionBar?.apply {
                 show()
                 setDisplayHomeAsUpEnabled(false)

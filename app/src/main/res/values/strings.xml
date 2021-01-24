@@ -17,34 +17,60 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="log_out">Log Out</string>
-    <string name="sign_in">Sign In</string>
-    <string name="register">Register</string>
-    <string name="repeat_password">Repeat Password</string>
-    <string name="enter_password">Enter Password</string>
-    <string name="enter_email">Enter Email</string>
-    <string name="see_more">ნახეთ ყველა</string>
-    <string name="book_title">სათაური:</string>
-    <string name="author">ავტორი:</string>
-    <string name="page_numbers">გვერდები:</string>
-    <string name="home">Home</string>
-    <string name="search">Search</string>
-    <string name="favorite">Favorites</string>
-    <string name="settings">Settings</string>
 
-    <string name="not_match">Passwords does not match!</string>
-    <string name="invalid_password">Password must be minimum 6 symbols!</string>
+    <!-- Login -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_out">Log Out</string>
+    <string name="new_user">New User?</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="repeat_password">Repeat Password</string>
+
+    <!-- Error messages-->
+    <string name="empty_email">Email is required</string>
     <string name="empty_password">Password is required</string>
     <string name="invalid_email">Invalid email address</string>
-    <string name="empty_email">Email is required</string>
-    <string name="failed_register">Authentication failed.</string>
+    <string name="not_match">Passwords does not match!</string>
+    <string name="failed_register">Authentication failed</string>
     <string name="failed_login">Username or password is not correct</string>
-    <string name="new_user">New User?</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="back_to_login">Back to Login</string>
-    <string name="read_now">წაკითხვა</string>
-    <string name="not_found">თქვენი სია ცარიელია</string>
-    <string name="sorry">ვწუხვარ,</string>
-    <string name="favorites">რჩეული წიგნები</string>
-    <string name="search_books">ჩაწერეთ სათაური ან ავტორი</string>
+    <string name="invalid_password">Password must be minimum 6 symbols!</string>
+
+    <!-- Nav -->
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="settings">Settings</string>
+
+    <!-- Main page -->
+    <string name="see_more">See More</string>
+    <string name="_see_more">ნახეთ ყველა</string>
+
+    <!-- Details -->
+    <string name="book_title">Title:</string>
+    <string name="_book_title">სათაური:</string>
+    <string name="author">Author:</string>
+    <string name="_author">ავტორი:</string>
+    <string name="page_numbers">Page Numbers:</string>
+    <string name="_page_numbers">გვერდები:</string>
+
+    <!-- Button Title -->
+    <string name="read_now">Read Now</string>
+    <string name="_read_now">წაკითხვა</string>
+
+    <!-- Not Found -->
+    <string name="sorry">I\'m Sorry,</string>
+    <string name="_sorry">ვწუხვარ,</string>
+    <string name="not_found">Your List is Empty</string>
+    <string name="_not_found">თქვენი სია ცარიელია</string>
+
+    <!-- Fragment Titles -->
+    <string name="_favorites">რჩეული წიგნები</string>
+    <string name="_search">ძებნა</string>
+
+    <!-- Hints -->
+    <string name="search_books">Enter title or author</string>
+    <string name="_search_books">ჩაწერეთ სათაური ან ავტორი</string>
+
 </resources>
