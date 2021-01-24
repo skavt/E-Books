@@ -52,10 +52,12 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     ): View {
         favoritesView = inflater.inflate(R.layout.favorites_fragment, container, false)
         (activity as AppCompatActivity).apply {
-            supportActionBar?.show()
             title = getString(R.string.favorites)
+            supportActionBar?.apply {
+                show()
+                setDisplayHomeAsUpEnabled(false)
+            }
         }
-        setHasOptionsMenu(true)
 
         noData = favoritesView.findViewById(R.id.no_fav_data)
         progressBar = favoritesView.findViewById(R.id.favorites_progress_bar)
