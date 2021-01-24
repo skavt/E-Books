@@ -47,7 +47,6 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var logOut: Button
     private val categoryList = ArrayList<Category>()
     private val favBookList = ArrayList<Books>()
-    private val searchBookList = ArrayList<Books>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -86,15 +85,6 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             dataSnapshot.children.forEach {
                                 categoryList.add(castCategoryData(it.value as HashMap<*, *>))
-
-                                var index = 0
-                                val data = it.child("books").value as ArrayList<*>
-
-                                while (index < data.size) {
-                                    searchBookList.add(castBookData(data[index] as HashMap<*, *>))
-                                    index++
-                                }
-
                             }
                             categoryItem.layoutManager = LinearLayoutManager(
                                 context,
@@ -107,8 +97,6 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                             )
                             progressBar.visibility = GONE
                             content.visibility = VISIBLE
-
-                            bookLiveData.setBooks(searchBookList)
                         }
 
                         override fun onCancelled(error: DatabaseError) {
