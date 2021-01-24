@@ -46,4 +46,5 @@
     <string name="not_found">თქვენი სია ცარიელია</string>
     <string name="sorry">ვწუხვარ,</string>
     <string name="favorites">რჩეული წიგნები</string>
+    <string name="search_books">ჩაწერეთ სათაური ან ავტორი</string>
 </resources>
