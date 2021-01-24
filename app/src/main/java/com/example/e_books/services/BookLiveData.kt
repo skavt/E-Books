@@ -23,6 +23,10 @@ class BookLiveData : ViewModel() {
     val categoryData: LiveData<Category>
         get() = _categoryData
 
+    private val _categoriesData = MutableLiveData<List<Category>>()
+    val categoriesData: LiveData<List<Category>>
+        get() = _categoriesData
+
     fun setBook(book: Books?) {
         _bookData.postValue(book)
     }
@@ -33,6 +37,10 @@ class BookLiveData : ViewModel() {
 
     fun setBooks(books: List<Books>?) {
         _booksLiveData.postValue(books)
+    }
+
+    fun setCategories(category: List<Category>?) {
+        _categoriesData.postValue(category)
     }
 
     fun setFavBooks(books: List<Books>?) {

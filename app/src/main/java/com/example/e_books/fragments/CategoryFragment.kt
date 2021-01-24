@@ -45,7 +45,7 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var progressBar: ProgressBar
     private lateinit var content: NestedScrollView
     private lateinit var logOut: Button
-    private val categoryList = ArrayList<Category>()
+    private var categoryList = ArrayList<Category>()
     private val favBookList = ArrayList<Books>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
@@ -65,9 +65,12 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         setHasOptionsMenu(true)
 
         auth = Firebase.auth
+        db = Firebase.database
         logOut = categoryView.findViewById(R.id.log_out)
         content = categoryView.findViewById(R.id.category_content)
         progressBar = categoryView.findViewById(R.id.category_progress_bar)
+        categoryItem = categoryView.findViewById(R.id.category_item)
+
         // TODO Delete this code after add user page
         logOut.setOnClickListener {
             auth.signOut()
@@ -77,32 +80,30 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.action_category_to_login)
             else -> {
-                db = Firebase.database
-                categoryItem = categoryView.findViewById(R.id.category_item)
+                val categoriesData = bookLiveData.categoriesData.value
+                when {
+                    categoriesData != null -> {
+                        categoryList = categoriesData as ArrayList<Category>
+                        setAdapter()
+                    }
+                    else -> {
+                        db.reference.child("categories")
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    dataSnapshot.children.forEach {
+                                        categoryList.add(castCategoryData(it.value as HashMap<*, *>))
+                                    }
+                                    setAdapter()
 
-                db.reference.child("categories")
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            dataSnapshot.children.forEach {
-                                categoryList.add(castCategoryData(it.value as HashMap<*, *>))
-                            }
-                            categoryItem.layoutManager = LinearLayoutManager(
-                                context,
-                                LinearLayoutManager.VERTICAL,
-                                false
-                            )
-                            categoryItem.adapter = CategoryAdapter(
-                                categoryList,
-                                this@CategoryFragment
-                            )
-                            progressBar.visibility = GONE
-                            content.visibility = VISIBLE
-                        }
+                                    bookLiveData.setCategories(categoryList)
+                                }
 
-                        override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
-                        }
-                    })
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+                            })
+                    }
+                }
 
                 db.reference.child("favorites")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -135,6 +136,18 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)
         categoryView.findNavController().navigate(R.id.book_details_fragment)
+    }
+
+    private fun setAdapter() {
+        categoryItem.apply {
+            layoutManager = LinearLayoutManager(
+                context, LinearLayoutManager.VERTICAL, false
+            )
+            adapter = CategoryAdapter(categoryList, this@CategoryFragment)
+        }
+
+        progressBar.visibility = GONE
+        content.visibility = VISIBLE
     }
 
 }
