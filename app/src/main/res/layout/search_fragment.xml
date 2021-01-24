@@ -15,8 +15,7 @@
         android:id="@+id/search_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/search"
@@ -27,9 +26,9 @@
             android:elevation="10dp"
             android:hint="@string/_search_books"
             android:inputType="text"
-            android:paddingStart="30sp"
-            android:paddingTop="15sp"
-            android:paddingBottom="15sp"
+            android:padding="15sp"
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:drawableEnd="@drawable/ic_baseline_clear_24"
             tools:ignore="RtlSymmetry" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,11 +1,13 @@
 package com.example.e_books.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -39,14 +41,15 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private var listOfBooks = ArrayList<Books>()
 
     private lateinit var searchView: View
-    private lateinit var search: EditText
     private lateinit var db: FirebaseDatabase
     private lateinit var content: LinearLayout
+    private lateinit var searchInput: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var searchItem: RecyclerView
 
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,12 +65,12 @@ class SearchFragment : Fragment(R.layout.search_fragment),
         }
 
         db = Firebase.database
-        search = searchView.findViewById(R.id.search)
+        searchInput = searchView.findViewById(R.id.search)
         searchItem = searchView.findViewById(R.id.search_item)
         content = searchView.findViewById(R.id.search_content)
         progressBar = searchView.findViewById(R.id.search_progress_bar)
 
-        search.requestFocus()
+        searchInput.requestFocus()
         listOfBooks.clear()
 
         val booksData = bookLiveData.booksLiveData.value
@@ -102,7 +105,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
             }
         }
 
-        search.addTextChangedListener(object : TextWatcher {
+        searchInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -113,6 +116,17 @@ class SearchFragment : Fragment(R.layout.search_fragment),
                 (searchItem.adapter as SearchAdapter).notifyDataSetChanged()
             }
 
+        })
+
+        searchInput.setOnTouchListener(OnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX + 30 >= searchInput.right - searchInput.compoundDrawables[2].bounds.width()
+                ) {
+                    searchInput.text.clear()
+                    return@OnTouchListener true
+                }
+            }
+            false
         })
 
         return searchView
