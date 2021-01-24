@@ -28,18 +28,19 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.forEach
 
 class SearchFragment : Fragment(R.layout.search_fragment),
     CategoryAdapter.OnItemClickListener {
 
-    private lateinit var searchItem: RecyclerView
-    private lateinit var search: EditText
-    private lateinit var searchView: View
     private var searchBookList = ArrayList<Books>()
+
+    private lateinit var searchView: View
+    private lateinit var search: EditText
     private lateinit var db: FirebaseDatabase
     private lateinit var content: LinearLayout
     private lateinit var progressBar: ProgressBar
+    private lateinit var searchItem: RecyclerView
+
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -55,42 +56,45 @@ class SearchFragment : Fragment(R.layout.search_fragment),
                 setDisplayHomeAsUpEnabled(false)
             }
         }
-        searchItem = searchView.findViewById(R.id.search_item)
+
+        db = Firebase.database
         search = searchView.findViewById(R.id.search)
-        progressBar = searchView.findViewById(R.id.search_progress_bar)
+        searchItem = searchView.findViewById(R.id.search_item)
         content = searchView.findViewById(R.id.search_content)
+        progressBar = searchView.findViewById(R.id.search_progress_bar)
 
         search.requestFocus()
 
-        if (bookLiveData.booksLiveData.value != null) {
-            searchBookList = bookLiveData.booksLiveData.value as ArrayList<Books>
-            setAdapter()
-        } else {
-            db = Firebase.database
+        val booksData = bookLiveData.booksLiveData.value
 
-            db.reference.child("categories")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        dataSnapshot.children.forEach {
+        when {
+            booksData != null -> {
+                searchBookList = booksData as ArrayList<Books>
+                setAdapter()
+            }
+            else -> {
+                db.reference.child("categories")
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            dataSnapshot.children.forEach {
+                                var index = 0
+                                val data = it.child("books").value as ArrayList<*>
 
-                            var index = 0
-                            val data = it.child("books").value as ArrayList<*>
-
-                            while (index < data.size) {
-                                searchBookList.add(castBookData(data[index] as HashMap<*, *>))
-                                index++
+                                while (index < data.size) {
+                                    searchBookList.add(castBookData(data[index] as HashMap<*, *>))
+                                    index++
+                                }
                             }
+                            setAdapter()
 
+                            bookLiveData.setBooks(searchBookList)
                         }
-                        setAdapter()
 
-                        bookLiveData.setBooks(searchBookList)
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
-                })
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+            }
         }
 
         return searchView
@@ -106,12 +110,12 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     }
 
     private fun setAdapter() {
-        searchItem.layoutManager = LinearLayoutManager(
-            context, LinearLayoutManager.VERTICAL, false
-        )
-        searchItem.adapter = SearchAdapter(
-            searchBookList, this
-        )
+        searchItem.apply {
+            layoutManager = LinearLayoutManager(
+                context, LinearLayoutManager.VERTICAL, false
+            )
+            adapter = SearchAdapter(searchBookList, this@SearchFragment)
+        }
 
         progressBar.visibility = View.GONE
         content.visibility = View.VISIBLE

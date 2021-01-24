@@ -23,6 +23,7 @@ class CategoryDetailsFragment : Fragment(R.layout.category_details_fragment),
 
     private lateinit var categoryDetailsView: View
     private lateinit var categoryDetailsItem: RecyclerView
+
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -38,10 +39,14 @@ class CategoryDetailsFragment : Fragment(R.layout.category_details_fragment),
         bookLiveData.categoryData.observe(viewLifecycleOwner, { category ->
             with(category) {
                 (activity as AppCompatActivity).title = category_name
-                categoryDetailsItem.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                categoryDetailsItem.adapter =
-                    CategoryDetailsAdapter(books as ArrayList<Books>, this@CategoryDetailsFragment)
+                categoryDetailsItem.apply {
+                    layoutManager = LinearLayoutManager(
+                        context, LinearLayoutManager.VERTICAL, false
+                    )
+                    adapter = CategoryDetailsAdapter(
+                        books as ArrayList<Books>, this@CategoryDetailsFragment
+                    )
+                }
             }
         })
 

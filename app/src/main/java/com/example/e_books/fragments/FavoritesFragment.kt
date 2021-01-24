@@ -35,14 +35,16 @@ import java.util.*
 class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     CategoryAdapter.OnItemClickListener {
 
+    private var bookList = ArrayList<Books>()
+
     private lateinit var auth: FirebaseAuth
     private lateinit var favoritesView: View
-    private lateinit var db: FirebaseDatabase
-    private lateinit var favoriteItem: RecyclerView
     private lateinit var noData: LinearLayout
-    private lateinit var progressBar: ProgressBar
+    private lateinit var db: FirebaseDatabase
     private lateinit var content: LinearLayout
-    private var bookList = ArrayList<Books>()
+    private lateinit var progressBar: ProgressBar
+    private lateinit var favoriteItem: RecyclerView
+
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -59,18 +61,17 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
             }
         }
 
-        noData = favoritesView.findViewById(R.id.no_fav_data)
-        progressBar = favoritesView.findViewById(R.id.favorites_progress_bar)
-        content = favoritesView.findViewById(R.id.favorites_content)
-
         auth = Firebase.auth
+        db = Firebase.database
+        noData = favoritesView.findViewById(R.id.no_fav_data)
+        content = favoritesView.findViewById(R.id.favorites_content)
+        favoriteItem = favoritesView.findViewById(R.id.favorites_item)
+        progressBar = favoritesView.findViewById(R.id.favorites_progress_bar)
+
 
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.login_fragment)
             else -> {
-                db = Firebase.database
-                favoriteItem = favoritesView.findViewById(R.id.favorites_item)
-
                 db.reference.child("favorites")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -87,15 +88,14 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                                     }
                                 }
                             }
-                            favoriteItem.layoutManager = LinearLayoutManager(
-                                context,
-                                LinearLayoutManager.VERTICAL,
-                                false
-                            )
-                            favoriteItem.adapter = FavoritesAdapter(
-                                bookList,
-                                this@FavoritesFragment
-                            )
+                            favoriteItem.apply {
+                                layoutManager = LinearLayoutManager(
+                                    context, LinearLayoutManager.VERTICAL, false
+                                )
+                                adapter = FavoritesAdapter(
+                                    bookList, this@FavoritesFragment
+                                )
+                            }
                             bookLiveData.setFavBooks(bookList)
                             progressBar.visibility = GONE
                             content.visibility = VISIBLE

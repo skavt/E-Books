@@ -26,10 +26,20 @@ import com.google.firebase.ktx.Firebase
 import kotlin.properties.Delegates
 
 class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
-    private lateinit var bookDetailsView: View
-    private lateinit var db: FirebaseDatabase
+
+    private lateinit var image: ImageView
     private lateinit var auth: FirebaseAuth
+    private lateinit var bookTitle: TextView
+    private lateinit var addToFav: ImageView
+    private lateinit var db: FirebaseDatabase
+    private lateinit var readerButton: Button
+    private lateinit var bookAuthor: TextView
+    private lateinit var bookDetailsView: View
+    private lateinit var removeFromFav: ImageView
+    private lateinit var bookPageNumbers: TextView
+    private lateinit var bookDescription: TextView
     private var bookId by Delegates.notNull<Int>()
+
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -42,15 +52,14 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
 
         auth = Firebase.auth
         db = Firebase.database
-
-        val bookTitle = bookDetailsView.findViewById<TextView>(R.id.book_details_title)
-        val bookDescription = bookDetailsView.findViewById<TextView>(R.id.book_details_description)
-        val bookAuthor = bookDetailsView.findViewById<TextView>(R.id.book_details_author)
-        val bookPageNumbers = bookDetailsView.findViewById<TextView>(R.id.book_details_page_numbers)
-        val image = bookDetailsView.findViewById<ImageView>(R.id.book_details_image)
-        val readerButton = bookDetailsView.findViewById<Button>(R.id.read_button)
-        val addToFav = bookDetailsView.findViewById<ImageView>(R.id.add_button)
-        val removeFromFav = bookDetailsView.findViewById<ImageView>(R.id.remove_button)
+        addToFav = bookDetailsView.findViewById(R.id.add_button)
+        readerButton = bookDetailsView.findViewById(R.id.read_button)
+        image = bookDetailsView.findViewById(R.id.book_details_image)
+        removeFromFav = bookDetailsView.findViewById(R.id.remove_button)
+        bookTitle = bookDetailsView.findViewById(R.id.book_details_title)
+        bookAuthor = bookDetailsView.findViewById(R.id.book_details_author)
+        bookDescription = bookDetailsView.findViewById(R.id.book_details_description)
+        bookPageNumbers = bookDetailsView.findViewById(R.id.book_details_page_numbers)
 
         bookLiveData.bookData.observe(viewLifecycleOwner, { book ->
             with(book) {

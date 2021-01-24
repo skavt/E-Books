@@ -38,15 +38,17 @@ import kotlin.collections.ArrayList
 
 class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.OnItemClickListener {
 
+    private val favBookList = ArrayList<Books>()
+    private var categoryList = ArrayList<Category>()
+
+    private lateinit var logOut: Button
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseDatabase
     private lateinit var categoryView: View
-    private lateinit var categoryItem: RecyclerView
+    private lateinit var db: FirebaseDatabase
     private lateinit var progressBar: ProgressBar
     private lateinit var content: NestedScrollView
-    private lateinit var logOut: Button
-    private var categoryList = ArrayList<Category>()
-    private val favBookList = ArrayList<Books>()
+    private lateinit var categoryItem: RecyclerView
+
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -68,8 +70,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         db = Firebase.database
         logOut = categoryView.findViewById(R.id.log_out)
         content = categoryView.findViewById(R.id.category_content)
-        progressBar = categoryView.findViewById(R.id.category_progress_bar)
         categoryItem = categoryView.findViewById(R.id.category_item)
+        progressBar = categoryView.findViewById(R.id.category_progress_bar)
 
         // TODO Delete this code after add user page
         logOut.setOnClickListener {

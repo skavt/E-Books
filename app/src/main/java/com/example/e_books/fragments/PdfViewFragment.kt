@@ -14,7 +14,9 @@ import com.example.e_books.R
 import com.example.e_books.services.BookLiveData
 
 class PdfViewFragment : Fragment(R.layout.pdf_view_fragment) {
+
     private lateinit var pdfView: View
+
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     @SuppressLint("SetJavaScriptEnabled")
