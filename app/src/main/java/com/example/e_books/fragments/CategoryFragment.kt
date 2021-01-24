@@ -3,10 +3,13 @@ package com.example.e_books.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -38,6 +41,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var db: FirebaseDatabase
     private lateinit var categoryView: View
     private lateinit var categoryItem: RecyclerView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var content: NestedScrollView
     private lateinit var logOut: Button
     private val categoryList = ArrayList<Category>()
     private val bookList = ArrayList<Books>()
@@ -60,6 +65,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
 
         auth = Firebase.auth
         logOut = categoryView.findViewById(R.id.log_out)
+        content = categoryView.findViewById(R.id.category_content)
+        progressBar = categoryView.findViewById(R.id.category_progress_bar)
         // TODO Delete this code after add user page
         logOut.setOnClickListener {
             auth.signOut()
@@ -87,6 +94,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                                 categoryList,
                                 this@CategoryFragment
                             )
+                            progressBar.visibility = GONE
+                            content.visibility = VISIBLE
                         }
 
                         override fun onCancelled(error: DatabaseError) {

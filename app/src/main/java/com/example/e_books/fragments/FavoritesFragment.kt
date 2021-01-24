@@ -7,6 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -39,6 +40,8 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     private lateinit var db: FirebaseDatabase
     private lateinit var favoriteItem: RecyclerView
     private lateinit var noData: LinearLayout
+    private lateinit var progressBar: ProgressBar
+    private lateinit var content: LinearLayout
     private var bookList = ArrayList<Books>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
@@ -55,6 +58,8 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
         setHasOptionsMenu(true)
 
         noData = favoritesView.findViewById(R.id.no_fav_data)
+        progressBar = favoritesView.findViewById(R.id.favorites_progress_bar)
+        content = favoritesView.findViewById(R.id.favorites_content)
 
         auth = Firebase.auth
 
@@ -90,6 +95,8 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                                 this@FavoritesFragment
                             )
                             bookLiveData.setFavBooks(bookList)
+                            progressBar.visibility = GONE
+                            content.visibility = VISIBLE
                         }
 
                         override fun onCancelled(error: DatabaseError) {
