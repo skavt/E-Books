@@ -8,39 +8,25 @@ fun castCategoryData(categoryData: java.util.HashMap<*, *>): Category {
     val categoryName = categoryData["category_name"].toString()
     val books = categoryData["books"] as ArrayList<*>
 
-    return Category(id, categoryName, castBookData(books))
-}
-
-fun castFavBookData(favData: java.util.HashMap<*, *>): Books {
-
-    val bookId = favData["book_id"].toString().toInt()
-    val name = favData["name"].toString()
-    val author = favData["author"].toString()
-    val description = favData["description"].toString()
-    val bookUrl = favData["bookUrl"].toString()
-    val imageUrl = favData["imageUrl"].toString()
-    val pageNumbers = favData["pageNumbers"].toString()
-
-    return Books(bookId, name, author, description, bookUrl, imageUrl, pageNumbers)
-}
-
-fun castBookData(bookData: ArrayList<*>): ArrayList<Books> {
-    val size = bookData.size
     var index = 0
     val bookList = ArrayList<Books>()
 
-    while (index < size) {
-        val mapBookData: HashMap<*, *> = bookData[index] as HashMap<*, *>
-        val bookId = mapBookData["book_id"].toString().toInt()
-        val name = mapBookData["name"].toString()
-        val author = mapBookData["author"].toString()
-        val description = mapBookData["description"].toString()
-        val bookUrl = mapBookData["bookUrl"].toString()
-        val imageUrl = mapBookData["imageUrl"].toString()
-        val pageNumbers = mapBookData["pageNumbers"].toString()
-
-        bookList.add(Books(bookId, name, author, description, bookUrl, imageUrl, pageNumbers))
+    while (index < books.size) {
+        bookList.add(castBookData(books[index] as HashMap<*, *>))
         index++
     }
-    return bookList
+    return Category(id, categoryName, bookList)
+}
+
+fun castBookData(bookData: HashMap<*, *>): Books {
+
+    val bookId = bookData["book_id"].toString().toInt()
+    val name = bookData["name"].toString()
+    val author = bookData["author"].toString()
+    val description = bookData["description"].toString()
+    val bookUrl = bookData["bookUrl"].toString()
+    val imageUrl = bookData["imageUrl"].toString()
+    val pageNumbers = bookData["pageNumbers"].toString()
+
+    return Books(bookId, name, author, description, bookUrl, imageUrl, pageNumbers)
 }

@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
 import com.example.e_books.adapters.FavoritesAdapter
-import com.example.e_books.extentions.castFavBookData
+import com.example.e_books.extentions.castBookData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
@@ -82,7 +82,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                                                 book.exists() -> noData.visibility = GONE
                                                 else -> noData.visibility = VISIBLE
                                             }
-                                            bookList.add(castFavBookData(book.value as HashMap<*, *>))
+                                            bookList.add(castBookData(book.value as HashMap<*, *>))
                                         }
                                     }
                                 }

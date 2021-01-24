@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_books.R
 import com.example.e_books.adapters.CategoryAdapter
+import com.example.e_books.extentions.castBookData
 import com.example.e_books.extentions.castCategoryData
-import com.example.e_books.extentions.castFavBookData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.OnItemClickListener {
@@ -45,7 +46,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var content: NestedScrollView
     private lateinit var logOut: Button
     private val categoryList = ArrayList<Category>()
-    private val bookList = ArrayList<Books>()
+    private val favBookList = ArrayList<Books>()
+    private val searchBookList = ArrayList<Books>()
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
     override fun onCreateView(
@@ -84,6 +86,15 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             dataSnapshot.children.forEach {
                                 categoryList.add(castCategoryData(it.value as HashMap<*, *>))
+
+                                var index = 0
+                                val data = it.child("books").value as ArrayList<*>
+
+                                while (index < data.size) {
+                                    searchBookList.add(castBookData(data[index] as HashMap<*, *>))
+                                    index++
+                                }
+
                             }
                             categoryItem.layoutManager = LinearLayoutManager(
                                 context,
@@ -96,6 +107,8 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                             )
                             progressBar.visibility = GONE
                             content.visibility = VISIBLE
+
+                            bookLiveData.setBooks(searchBookList)
                         }
 
                         override fun onCancelled(error: DatabaseError) {
@@ -109,11 +122,11 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                             dataSnapshot.children.forEach {
                                 if (auth.currentUser?.uid == it.key) {
                                     it.children.forEach { book ->
-                                        bookList.add(castFavBookData(book.value as HashMap<*, *>))
+                                        favBookList.add(castBookData(book.value as HashMap<*, *>))
                                     }
                                 }
                             }
-                            bookLiveData.setFavBooks(bookList)
+                            bookLiveData.setFavBooks(favBookList)
                         }
 
                         override fun onCancelled(error: DatabaseError) {
