@@ -51,6 +51,12 @@
 
     </fragment>
     <fragment
+        android:id="@+id/search_fragment"
+        android:name="com.example.e_books.fragments.SearchFragment"
+        tools:layout="@layout/search_fragment">
+
+    </fragment>
+    <fragment
         android:id="@+id/login_fragment"
         android:name="com.example.e_books.fragments.LoginFragment"
         android:label="login_fragment"
