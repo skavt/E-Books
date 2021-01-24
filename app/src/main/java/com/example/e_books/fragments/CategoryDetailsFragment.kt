@@ -53,9 +53,7 @@ class CategoryDetailsFragment : Fragment(R.layout.category_details_fragment),
         return categoryDetailsView
     }
 
-    override fun onSeeMoreClick(category: Category) {
-        TODO("Not yet implemented")
-    }
+    override fun onSeeMoreClick(category: Category) {}
 
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)

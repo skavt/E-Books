@@ -8,6 +8,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -102,7 +103,9 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                         }
 
                         override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
+                            Toast.makeText(
+                                context, getString(R.string.something_wrong), Toast.LENGTH_LONG
+                            ).show()
                         }
                     })
             }
@@ -111,9 +114,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
         return favoritesView
     }
 
-    override fun onSeeMoreClick(category: Category) {
-        TODO("Not yet implemented")
-    }
+    override fun onSeeMoreClick(category: Category) {}
 
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)

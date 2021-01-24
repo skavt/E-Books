@@ -72,5 +72,6 @@
     <!-- Hints -->
     <string name="search_books">Enter title or author</string>
     <string name="_search_books">ჩაწერეთ სათაური ან ავტორი</string>
+    <string name="something_wrong">Something Wrong</string>
 
 </resources>
