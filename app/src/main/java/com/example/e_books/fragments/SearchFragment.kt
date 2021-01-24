@@ -1,6 +1,9 @@
 package com.example.e_books.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +36,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     CategoryAdapter.OnItemClickListener {
 
     private var searchBookList = ArrayList<Books>()
+    private var listOfBooks = ArrayList<Books>()
 
     private lateinit var searchView: View
     private lateinit var search: EditText
@@ -64,6 +68,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
         progressBar = searchView.findViewById(R.id.search_progress_bar)
 
         search.requestFocus()
+        listOfBooks.clear()
 
         val booksData = bookLiveData.booksLiveData.value
 
@@ -97,7 +102,33 @@ class SearchFragment : Fragment(R.layout.search_fragment),
             }
         }
 
+        search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                listOfBooks.clear()
+                listOfBooks.addAll(searchBookList.search(p0.toString()))
+                (searchItem.adapter as SearchAdapter).notifyDataSetChanged()
+            }
+
+        })
+
         return searchView
+    }
+
+    fun List<Books>.search(nameChars: String): List<Books> {
+        val list = ArrayList<Books>()
+        forEach {
+            when {
+                it.name.toLowerCase(Locale.ROOT)
+                    .contains(nameChars.toLowerCase(Locale.ROOT)) -> list.add(it)
+                it.author.toLowerCase(Locale.ROOT)
+                    .contains(nameChars.toLowerCase(Locale.ROOT)) -> list.add(it)
+            }
+        }
+        return list
     }
 
     override fun onSeeMoreClick(category: Category) {
@@ -114,8 +145,11 @@ class SearchFragment : Fragment(R.layout.search_fragment),
             layoutManager = LinearLayoutManager(
                 context, LinearLayoutManager.VERTICAL, false
             )
-            adapter = SearchAdapter(searchBookList, this@SearchFragment)
+            adapter = SearchAdapter(listOfBooks, this@SearchFragment)
         }
+
+        listOfBooks.addAll(searchBookList)
+        (searchItem.adapter as SearchAdapter).notifyDataSetChanged()
 
         progressBar.visibility = View.GONE
         content.visibility = View.VISIBLE
