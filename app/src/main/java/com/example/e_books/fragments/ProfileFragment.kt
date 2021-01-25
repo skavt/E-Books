@@ -32,7 +32,6 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
     private lateinit var passRepeatField: TextView
     private lateinit var logOut: Button
     private lateinit var emailDisplay: TextView
-    private lateinit var emailEdit: MaterialButton
     private lateinit var passEdit: AppCompatButton
     private lateinit var auth: FirebaseAuth
 
@@ -52,7 +51,6 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
 
         auth = Firebase.auth
         logOut = profileView.findViewById(R.id.log_out)
-        emailEdit = profileView.findViewById(R.id.edit_email_button)
         passEdit = profileView.findViewById(R.id.changePassButton)
         emailField = profileView.findViewById(R.id.textEmail)
         currentField = profileView.findViewById(R.id.textCurrentPass)
@@ -67,45 +65,6 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
             profileView.findNavController().navigate(R.id.login_fragment)
         }
 
-        emailEdit.setOnClickListener {
-            if (emailField.isVisible) {
-                when {
-                    validateEmail(emailField) -> {
-                        auth.currentUser!!.updateEmail(emailField.text.toString())
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    emailEdit.apply {
-                                        icon = ResourcesCompat.getDrawable(
-                                            resources,
-                                            R.drawable.ic_baseline_edit_24,
-                                            null
-                                        )
-                                    }
-                                    Toast.makeText(
-                                        context,
-                                        "Email updated successfully!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    emailDisplay.apply {
-                                        visibility = VISIBLE
-                                        text = emailField.text.toString()
-                                    }
-                                    emailField.visibility = GONE
-
-                                }
-                            }
-                    }
-                }
-            } else {
-                emailEdit.icon =
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_done_24, null)
-                emailDisplay.visibility = GONE
-                emailField.apply {
-                    visibility = VISIBLE
-                    requestFocus()
-                }
-            }
-        }
 
         passEdit.setOnClickListener {
             if (passField.isVisible) {

@@ -58,16 +58,6 @@
                     android:visibility="gone"
                     android:textColor="@color/black" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/edit_email_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/round_button"
-                    android:gravity="center_vertical|center_horizontal"
-                    app:icon="@drawable/ic_baseline_edit_24"
-                    app:iconTint="@color/colorPrimaryVariant"
-                    android:layout_margin="4dp"
-                    />
             </LinearLayout>
 
             <EditText
