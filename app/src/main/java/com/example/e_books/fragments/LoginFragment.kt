@@ -240,7 +240,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                 it.isSuccessful -> {
                     val user = auth.currentUser
                     Toast.makeText(context, "Hello, ${user?.email}", Toast.LENGTH_LONG).show()
-                    findNavController().popBackStack()
+                    findNavController().navigate(LoginFragmentDirections.actionLoginToCategory())
                 }
                 else -> {
                     // If sign in fails, display a message to the user.

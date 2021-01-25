@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_category_to_login"
             app:destination="@id/login_fragment" />
+        <action
+            android:id="@+id/action_category_fragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
     </fragment>
     <fragment
         android:id="@+id/category_details_fragment"
@@ -63,12 +66,17 @@
         tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_login_to_category"
-            app:destination="@id/category_fragment" />
+            app:destination="@id/category_fragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/profile_fragment"
         android:name="com.example.e_books.fragments.ProfileFragment"
         android:label="profile_fragment"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/action_profile_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
 
 </navigation>
