@@ -11,4 +11,5 @@
     <color name="dark_grey">#BDBBBB</color>
     <color name="blue">#3754F1</color>
     <color name="colorPrimaryVariant">#ff000000</color>
+    <color name="deep_grey">#121212</color>
 </resources>
