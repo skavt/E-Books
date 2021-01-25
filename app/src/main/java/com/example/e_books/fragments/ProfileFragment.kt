@@ -13,12 +13,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.e_books.R
-import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -26,7 +24,6 @@ import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment(R.layout.profile_fragment) {
     private lateinit var profileView: View
-    private lateinit var emailField: TextView
     private lateinit var currentField: TextView
     private lateinit var passField: TextView
     private lateinit var passRepeatField: TextView
@@ -52,7 +49,6 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
         auth = Firebase.auth
         logOut = profileView.findViewById(R.id.log_out)
         passEdit = profileView.findViewById(R.id.changePassButton)
-        emailField = profileView.findViewById(R.id.textEmail)
         currentField = profileView.findViewById(R.id.textCurrentPass)
         passField = profileView.findViewById(R.id.textPass)
         passRepeatField = profileView.findViewById(R.id.textPassRepeat)
@@ -69,12 +65,17 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
         passEdit.setOnClickListener {
             if (passField.isVisible) {
                 val currentPassword = currentField.text.toString()
-                auth.currentUser!!.email?.let { it1 ->
-                    reauth(
-                        it1,
-                        currentPassword,
-                        PASS_CHANGE_FINISH
-                    )
+                when {
+                    validatePassword(currentField) -> {
+                        auth.currentUser!!.email?.let { it1 ->
+                            reauth(
+                                it1,
+                                currentPassword,
+                                PASS_CHANGE_FINISH
+                            )
+                        }
+                    }
+
                 }
             } else {
                 updateUi(PASS_CHANGE_PRESSED)
@@ -97,6 +98,22 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
                 passField.visibility = GONE
                 passRepeatField.visibility = GONE
                 passEdit.text = getString(R.string.change_password)
+
+                currentField.apply {
+                    text = ""
+                    error = null
+                    clearFocus()
+                }
+                passField.apply {
+                    text = ""
+                    error = null
+                    clearFocus()
+                }
+                passRepeatField.apply {
+                    text = ""
+                    error = null
+                    clearFocus()
+                }
             }
         }
 
@@ -144,38 +161,17 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
             }
     }
 
-    private fun validateEmail(email: TextView): Boolean {
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        val invalidError = getString(R.string.invalid_email)
-        val requiredError = getString(R.string.empty_email)
-
-        return when {
-            email.text.toString().isEmpty() -> {
-                Toast.makeText(context, requiredError, Toast.LENGTH_SHORT).show()
-                email.error = requiredError
-                false
-            }
-            else -> {
-                when {
-                    email.text.toString().trim { it <= ' ' }.matches(emailPattern.toRegex()) -> true
-                    else -> {
-                        Toast.makeText(context, invalidError, Toast.LENGTH_SHORT).show()
-                        email.error = invalidError
-                        false
-                    }
-                }
-            }
-        }
-    }
-
     private fun checkPasswords(password: TextView, passwordRepeat: TextView): Boolean {
-        val error = getString(R.string.not_match)
+        val errorMessage = getString(R.string.not_match)
 
         return when {
             password.text.toString() == passwordRepeat.text.toString() -> true
             else -> {
-                Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-                passwordRepeat.error = error
+                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+                passwordRepeat.apply {
+                    error = errorMessage
+                    requestFocus()
+                }
                 false
             }
         }
@@ -188,12 +184,18 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
         return when {
             password.text.isEmpty() -> {
                 Toast.makeText(context, emptyError, Toast.LENGTH_LONG).show()
-                password.error = emptyError
+                password.apply {
+                    error = emptyError
+                    requestFocusFromTouch()
+                }
                 false
             }
             password.text.toString().length < 6 -> {
                 Toast.makeText(context, lengthError, Toast.LENGTH_LONG).show()
-                password.error = lengthError
+                password.apply {
+                    error = lengthError
+                    requestFocusFromTouch()
+                }
                 false
             }
             else -> true
@@ -203,7 +205,6 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
     companion object Action {
         var PASS_CHANGE_PRESSED = "pass_change_pressed"
         var PASS_CHANGE_FINISH = "pass_change_finish"
-        var EMAIL_CHANGE_FINISH = "email_change_finish"
     }
 
 }
