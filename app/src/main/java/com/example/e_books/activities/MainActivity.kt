@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_home -> findNavController(R.id.fragment).navigate(R.id.category_fragment)
             R.id.nav_favorite -> findNavController(R.id.fragment).navigate(R.id.favorites_fragment)
             R.id.nav_search -> findNavController(R.id.fragment).navigate(R.id.search_fragment)
+            R.id.nav_profile -> findNavController(R.id.fragment).navigate(R.id.profile_fragment)
         }
         true
     }

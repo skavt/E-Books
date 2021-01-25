@@ -42,7 +42,6 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private val favBookList = ArrayList<Books>()
     private var categoryList = ArrayList<Category>()
 
-    private lateinit var logOut: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var categoryView: View
     private lateinit var db: FirebaseDatabase
@@ -69,16 +68,9 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
 
         auth = Firebase.auth
         db = Firebase.database
-        logOut = categoryView.findViewById(R.id.log_out)
         content = categoryView.findViewById(R.id.category_content)
         categoryItem = categoryView.findViewById(R.id.category_item)
         progressBar = categoryView.findViewById(R.id.category_progress_bar)
-
-        // TODO Delete this code after add user page
-        logOut.setOnClickListener {
-            auth.signOut()
-            categoryView.findNavController().navigate(R.id.login_fragment)
-        }
 
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.action_category_to_login)
