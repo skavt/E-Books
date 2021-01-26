@@ -10,10 +10,12 @@
     <color name="grey">#f2f2f2</color>
     <color name="dark_grey">#BDBBBB</color>
     <color name="blue">#3754F1</color>
-    <color name="colorPrimaryVariant">#ff000000</color>
-    <color name="deep_grey">#121212</color>
-    <color name="red">#C63C3C</color>
-    <color name="icon_color">#000000</color>
-    <color name="mainTextColor">#000000</color>
-    <color name="blackButton">#000000</color>
+    <color name="colorPrimaryVariant">#606060</color>
+    <color name="deep_grey">#474747</color>
+    <color name="red">#D14A4A</color>
+    <color name="icon_color">#B1B1B1</color>
+    <color name="mainTextColor">#E4E4E4</color>
+    <color name="blackButton">#787878</color>
+
+
 </resources>

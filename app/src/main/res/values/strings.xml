@@ -87,4 +87,12 @@
     <string name="new_password">New Password</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Preferences-->
+    <string name="pf_dark_dialog">Set App Theme</string>
+    <string name="pf_light_title">Light Theme</string>
+    <string name="pf_key_light">light</string>
+    <string name="dark_mode_def_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
+    <string name="dark_mode">Dark Mode</string>
+
+
 </resources>

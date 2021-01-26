@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="?android:windowBackground"
     android:layout_height="match_parent">
 
     <ProgressBar
@@ -56,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/_sorry"
-                android:textColor="@color/black"
+                android:textColor="@color/mainTextColor"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -66,7 +67,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:text="@string/_no_books_found"
-                android:textColor="@color/black"
+                android:textColor="@color/mainTextColor"
                 android:textSize="14sp" />
 
         </LinearLayout>

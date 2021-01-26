@@ -13,4 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="bottomNavigation">
+        <item name="android:background">@color/deep_grey</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/white</item>
+    </style>
+
+
 </resources>
