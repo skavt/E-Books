@@ -36,6 +36,9 @@
     <string name="failed_register">Authentication failed</string>
     <string name="failed_login">Username or password is not correct</string>
     <string name="invalid_password">Password must be minimum 6 symbols!</string>
+    <string name="updated_password">Password updated successfully</string>
+    <string name="current_pass_error">Current password is not correct</string>
+    <string name="incorrect_password">Incorrect password</string>
 
     <!-- Nav -->
     <string name="home">Home</string>

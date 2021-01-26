@@ -136,7 +136,7 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
                                         if (it.isSuccessful) {
                                             Toast.makeText(
                                                 context,
-                                                "Password updated successfully",
+                                                getString(R.string.updated_password),
                                                 Toast.LENGTH_LONG
                                             ).show()
                                             updateUi(PASS_CHANGE_FINISH)
@@ -148,9 +148,9 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
                     }
                 }
             } else {
-                Toast.makeText(context, "Current password is not correct", Toast.LENGTH_LONG)
+                Toast.makeText(context, getString(R.string.current_pass_error), Toast.LENGTH_LONG)
                     .show()
-                currentField.error = "Incorrect password."
+                currentField.error = getString(R.string.incorrect_password)
             }
         }
     }
