@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -43,6 +43,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
     private lateinit var searchView: View
     private lateinit var db: FirebaseDatabase
+    private lateinit var noData: LinearLayout
     private lateinit var content: LinearLayout
     private lateinit var searchInput: EditText
     private lateinit var progressBar: ProgressBar
@@ -66,6 +67,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
         }
 
         db = Firebase.database
+        noData = searchView.findViewById(R.id.no_data)
         searchInput = searchView.findViewById(R.id.search)
         searchItem = searchView.findViewById(R.id.search_item)
         content = searchView.findViewById(R.id.search_content)
@@ -117,6 +119,16 @@ class SearchFragment : Fragment(R.layout.search_fragment),
                 listOfBooks.clear()
                 listOfBooks.addAll(searchBookList.search(p0.toString()))
                 (searchItem.adapter as SearchAdapter).notifyDataSetChanged()
+                when {
+                    listOfBooks.isEmpty() -> {
+                        noData.visibility = VISIBLE
+                        searchItem.visibility = GONE
+                    }
+                    else -> {
+                        searchItem.visibility = VISIBLE
+                        noData.visibility = GONE
+                    }
+                }
             }
 
         })

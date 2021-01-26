@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/no_fav_data" />
+                app:srcCompat="@drawable/no_data" />
 
             <TextView
                 android:layout_width="wrap_content"
