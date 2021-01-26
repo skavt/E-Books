@@ -2,20 +2,19 @@ package com.example.e_books.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.isVisible
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.example.e_books.R
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -23,14 +22,18 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment(R.layout.profile_fragment) {
+
     private lateinit var profileView: View
-    private lateinit var currentField: TextView
-    private lateinit var passField: TextView
-    private lateinit var passRepeatField: TextView
-    private lateinit var logOut: Button
-    private lateinit var emailDisplay: TextView
-    private lateinit var passEdit: AppCompatButton
     private lateinit var auth: FirebaseAuth
+    private lateinit var passField: TextView
+    private lateinit var currentField: TextView
+    private lateinit var emailDisplay: TextView
+    private lateinit var cancelEditing: TextView
+    private lateinit var changePassword: TextView
+    private lateinit var mainContent: LinearLayout
+    private lateinit var passRepeatField: TextView
+    private lateinit var savePassword: AppCompatButton
+    private lateinit var passwordChangeContent: CardView
 
 
     @SuppressLint("ShowToast")
@@ -50,38 +53,35 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
         }
 
         auth = Firebase.auth
-        logOut = profileView.findViewById(R.id.log_out)
-        passEdit = profileView.findViewById(R.id.changePassButton)
-        currentField = profileView.findViewById(R.id.textCurrentPass)
         passField = profileView.findViewById(R.id.textPass)
+        cancelEditing = profileView.findViewById(R.id.cancel)
+        savePassword = profileView.findViewById(R.id.save_password)
+        currentField = profileView.findViewById(R.id.textCurrentPass)
         passRepeatField = profileView.findViewById(R.id.textPassRepeat)
+        changePassword = profileView.findViewById(R.id.change_password)
         emailDisplay = profileView.findViewById(R.id.email_display_text)
+        mainContent = profileView.findViewById(R.id.profile_main_content)
+        passwordChangeContent = profileView.findViewById(R.id.password_edit_content)
 
         emailDisplay.text = auth.currentUser!!.email
 
-        logOut.setOnClickListener {
-            auth.signOut()
-            profileView.findNavController().navigate(R.id.login_fragment)
+        changePassword.setOnClickListener {
+            updateUi(PASS_CHANGE_PRESSED)
         }
 
+        cancelEditing.setOnClickListener {
+            updateUi(PASS_CHANGE_FINISH)
+        }
 
-        passEdit.setOnClickListener {
-            if (passField.isVisible) {
-                val currentPassword = currentField.text.toString()
-                when {
-                    validatePassword(currentField) -> {
-                        auth.currentUser!!.email?.let { it1 ->
-                            reauth(
-                                it1,
-                                currentPassword,
-                                PASS_CHANGE_FINISH
-                            )
-                        }
+        savePassword.setOnClickListener {
+            val currentPassword = currentField.text.toString()
+            when {
+                validatePassword(currentField) -> {
+                    auth.currentUser!!.email?.let { it1 ->
+                        reAuth(it1, currentPassword, PASS_CHANGE_FINISH)
                     }
-
                 }
-            } else {
-                updateUi(PASS_CHANGE_PRESSED)
+
             }
         }
 
@@ -91,16 +91,12 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
     private fun updateUi(action: String) {
         when (action) {
             PASS_CHANGE_PRESSED -> {
-                currentField.visibility = VISIBLE
-                passField.visibility = VISIBLE
-                passRepeatField.visibility = VISIBLE
-                passEdit.text = getString(R.string.save)
+                mainContent.visibility = GONE
+                passwordChangeContent.visibility = VISIBLE
             }
             PASS_CHANGE_FINISH -> {
-                currentField.visibility = GONE
-                passField.visibility = GONE
-                passRepeatField.visibility = GONE
-                passEdit.text = getString(R.string.change_password)
+                mainContent.visibility = VISIBLE
+                passwordChangeContent.visibility = GONE
 
                 currentField.apply {
                     text = ""
@@ -122,46 +118,41 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
 
     }
 
-    private fun reauth(email: String, pass: String, action: String) {
+    private fun reAuth(email: String, pass: String, action: String) {
         val user = auth.currentUser
-        val credential = EmailAuthProvider
-            .getCredential(email, pass)
+        val credential = EmailAuthProvider.getCredential(email, pass)
 
-        user!!.reauthenticate(credential)
-            .addOnCompleteListener { task ->
-                val ths = task
-                if (task.isSuccessful) {
-                    Log.d("RE-AUTH", "User re-authenticated.")
+        user!!.reauthenticate(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                when (action) {
+                    PASS_CHANGE_FINISH -> {
+                        when {
+                            validatePassword(passField) &&
+                                    checkPasswords(passField, passRepeatField) -> {
 
-                    when (action) {
-                        PASS_CHANGE_FINISH -> {
-                            when {
-                                validatePassword(passField) &&
-                                        checkPasswords(passField, passRepeatField) -> {
-
-                                    val password = passField.text.toString()
-                                    auth.currentUser!!.updatePassword(password)
-                                        .addOnCompleteListener { it ->
-                                            if (it.isSuccessful) {
-                                                Toast.makeText(
-                                                    context,
-                                                    "Password updated successfully",
-                                                    Toast.LENGTH_LONG
-                                                ).show()
-                                                updateUi(PASS_CHANGE_FINISH)
-                                            }
+                                val password = passField.text.toString()
+                                auth.currentUser!!.updatePassword(password)
+                                    .addOnCompleteListener { it ->
+                                        if (it.isSuccessful) {
+                                            Toast.makeText(
+                                                context,
+                                                "Password updated successfully",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            updateUi(PASS_CHANGE_FINISH)
                                         }
-                                }
-
+                                    }
                             }
+
                         }
                     }
-                } else {
-                    Toast.makeText(context, "Current password is not correct", Toast.LENGTH_LONG)
-                        .show()
-                    currentField.error = "Incorrect password."
                 }
+            } else {
+                Toast.makeText(context, "Current password is not correct", Toast.LENGTH_LONG)
+                    .show()
+                currentField.error = "Incorrect password."
             }
+        }
     }
 
     private fun checkPasswords(password: TextView, passwordRepeat: TextView): Boolean {

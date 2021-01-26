@@ -4,16 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     tools:context=".fragments.ProfileFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/books" />
+
+    <LinearLayout
+        android:id="@+id/profile_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="170dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar" />
+
+        <TextView
+            android:id="@+id/email_display_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="example@gmail.com" />
+
+        <TextView
+            android:id="@+id/change_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
+            android:text="@string/change_password"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/password_edit_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
+        android:visibility="gone"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp">
 
@@ -23,30 +69,14 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/email_display_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/black"
-                    android:ems="3"
-                    android:enabled="false"
-                    android:hint="@string/enter_email"
-                    android:layout_weight="10"
-                    android:text="Email"
-                    android:textSize="20sp"
-
-                    android:textColor="@color/black" />
-
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/change_password"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/textCurrentPass"
@@ -58,8 +88,7 @@
                 android:ems="10"
                 android:hint="@string/current_password"
                 android:inputType="textPassword"
-                android:textColor="@color/black"
-                android:visibility="gone"/>
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/textPass"
@@ -71,8 +100,7 @@
                 android:ems="10"
                 android:hint="@string/new_password"
                 android:inputType="textPassword"
-                android:textColor="@color/black"
-                android:visibility="gone"/>
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/textPassRepeat"
@@ -85,11 +113,10 @@
                 android:ems="10"
                 android:hint="@string/repeat_password"
                 android:inputType="textPassword"
-                android:textColor="@color/black"
-                android:visibility="gone" />
+                android:textColor="@color/black" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/changePassButton"
+                android:id="@+id/save_password"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
@@ -98,10 +125,21 @@
                 android:background="@drawable/form_button"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
-                android:text="@string/change_password"
+                android:text="@string/save"
                 android:theme="@style/formButton" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/cancel"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/blue"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!--<androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/log_out"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -112,9 +150,10 @@
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
                 android:text="@string/log_out"
-                android:theme="@style/formButton" />
+                android:theme="@style/formButton" />-->
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
 </FrameLayout>
