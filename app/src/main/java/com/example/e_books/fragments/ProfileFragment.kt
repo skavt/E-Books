@@ -38,12 +38,15 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         profileView = inflater.inflate(R.layout.profile_fragment, container, false)
         (activity as AppCompatActivity).apply {
-            supportActionBar?.show()
-            title = "Profile"
+            title = getString(R.string._profile)
+            supportActionBar?.apply {
+                show()
+                setDisplayHomeAsUpEnabled(false)
+            }
         }
 
         auth = Firebase.auth

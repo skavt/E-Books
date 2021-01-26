@@ -76,6 +76,7 @@
 
     <!-- Profile -->
     <string name="profile">Profile</string>
+    <string name="_profile">პროფილი</string>
     <string name="change_password">Change password</string>
     <string name="save">Save</string>
     <string name="current_password">Current password</string>
