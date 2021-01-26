@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.e_books.R
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +31,8 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
     private lateinit var emailDisplay: TextView
     private lateinit var cancelEditing: TextView
     private lateinit var changePassword: TextView
+    private lateinit var settingsButton: TextView
+    private lateinit var logOutButton: TextView
     private lateinit var mainContent: LinearLayout
     private lateinit var passRepeatField: TextView
     private lateinit var savePassword: AppCompatButton
@@ -62,6 +65,8 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
         emailDisplay = profileView.findViewById(R.id.email_display_text)
         mainContent = profileView.findViewById(R.id.profile_main_content)
         passwordChangeContent = profileView.findViewById(R.id.password_edit_content)
+        settingsButton = profileView.findViewById(R.id.settings_button)
+        logOutButton = profileView.findViewById(R.id.log_out)
 
         emailDisplay.text = auth.currentUser!!.email
 
@@ -71,6 +76,15 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
 
         cancelEditing.setOnClickListener {
             updateUi(PASS_CHANGE_FINISH)
+        }
+
+        settingsButton.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSettingsFragment())
+        }
+
+        logOutButton.setOnClickListener {
+            auth.signOut()
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
         }
 
         savePassword.setOnClickListener {
