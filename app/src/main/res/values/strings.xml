@@ -45,6 +45,7 @@
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
     <string name="settings">Settings</string>
+    <string name="_settings">პარამეტრები</string>
 
     <!-- Main page -->
     <string name="see_more">See More</string>

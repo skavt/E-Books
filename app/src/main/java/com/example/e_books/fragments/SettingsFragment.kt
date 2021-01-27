@@ -3,6 +3,7 @@ package com.example.e_books.fragments
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -16,6 +17,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
     @SuppressLint("RestrictedApi")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+        (activity as AppCompatActivity).apply {
+            title = getString(R.string._settings)
+            supportActionBar?.apply {
+                show()
+            }
+        }
 
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
             .registerOnSharedPreferenceChangeListener(this)
