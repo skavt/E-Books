@@ -12,11 +12,12 @@
     <color name="colorPrimaryVariant">#606060</color>
     <color name="deep_grey">#474747</color>
     <color name="red">#D14A4A</color>
-    <color name="icon_color">#B1B1B1</color>
+    <color name="icon_color">#FFFFFF</color>
     <color name="mainTextColor">#E4E4E4</color>
     <color name="blackButton">#787878</color>
 
     <color name="background_color">#000000</color>
     <color name="item_background">#2F6C6868</color>
+    <color name="profile_background">#3B000000</color>
 
 </resources>

@@ -18,5 +18,6 @@
 
     <color name="background_color">#F2F2F2</color>
     <color name="item_background">#FFFFFF</color>
+    <color name="profile_background">#3B000000</color>
 
 </resources>
