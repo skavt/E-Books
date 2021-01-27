@@ -1,41 +1,46 @@
 package com.example.e_books.fragments
 
-import android.content.res.Configuration
+import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.BuildCompat
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import com.example.e_books.R
+import com.firebase.ui.auth.AuthUI.getApplicationContext
 
-class SettingsFragment : PreferenceFragmentCompat() {
 
+class SettingsFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
+
+    @SuppressLint("RestrictedApi")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        Preference.OnPreferenceChangeListener { _, newValue ->
-            Log.i("newValue", newValue.toString())
-            newValue as? String
-            when (newValue) {
 
-//                getString(R.string.pf_light_on) -> {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//                }
-//                getString(R.string.pf_light_off) -> {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//                }
-//                else -> if (BuildCompat.isAtLeastQ()) {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-//                } else {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
-//                }
-            }
-            true
-        }
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            .registerOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
+    @SuppressLint("RestrictedApi")
+    override fun onDestroy() {
+        super.onDestroy()
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            .unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    @SuppressLint("RestrictedApi")
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+
+        val darkModeString = getString(R.string.dark_mode)
+        key?.let {
+            if (it == darkModeString) sharedPreferences?.let { pref ->
+                val darkModeValues = resources.getStringArray(R.array.dark_mode_values)
+                when (pref.getString(darkModeString, darkModeValues[0])) {
+                    darkModeValues[0] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    darkModeValues[1] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+            }
+        }
 
     }
 }

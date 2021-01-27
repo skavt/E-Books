@@ -1,13 +1,19 @@
 package com.example.e_books.activities
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import com.example.e_books.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
+
+    private var nightMode: Int = 0
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +25,27 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnNavigationItemSelectedListener(navListener)
+
+        // Set selected mode
+        sharedPreferences = getSharedPreferences("SharedPrefs", MODE_PRIVATE);
+        nightMode = sharedPreferences.getInt("NightModeInt", 1);
+        AppCompatDelegate.setDefaultNightMode(nightMode);
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        nightMode = AppCompatDelegate.getDefaultNightMode()
+        sharedPreferences = getSharedPreferences("SharedPrefs", MODE_PRIVATE)
+
+        editor = sharedPreferences.edit()
+        editor.putInt("NightModeInt", nightMode)
+        editor.apply()
     }
 
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
