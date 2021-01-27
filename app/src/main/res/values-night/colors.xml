@@ -19,5 +19,7 @@
     <color name="background_color">#000000</color>
     <color name="item_background">#2F6C6868</color>
     <color name="profile_background">#3B000000</color>
+    <color name="card_background">#474747</color>
+
 
 </resources>
