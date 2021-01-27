@@ -6,7 +6,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -38,11 +38,10 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
 
     private var bookList = ArrayList<Books>()
 
+    private lateinit var noData: ImageView
     private lateinit var auth: FirebaseAuth
     private lateinit var favoritesView: View
-    private lateinit var noData: LinearLayout
     private lateinit var db: FirebaseDatabase
-    private lateinit var content: LinearLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var favoriteItem: RecyclerView
 
@@ -65,7 +64,6 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
         auth = Firebase.auth
         db = Firebase.database
         noData = favoritesView.findViewById(R.id.no_fav_data)
-        content = favoritesView.findViewById(R.id.favorites_content)
         favoriteItem = favoritesView.findViewById(R.id.favorites_item)
         progressBar = favoritesView.findViewById(R.id.favorites_progress_bar)
 
@@ -80,10 +78,6 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                                 when (auth.currentUser?.uid) {
                                     it.key -> {
                                         it.children.forEach { book ->
-                                            when {
-                                                book.exists() -> noData.visibility = GONE
-                                                else -> noData.visibility = VISIBLE
-                                            }
                                             bookList.add(castBookData(book.value as HashMap<*, *>))
                                         }
                                     }
@@ -99,7 +93,16 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                             }
                             bookLiveData.setFavBooks(bookList)
                             progressBar.visibility = GONE
-                            content.visibility = VISIBLE
+                            when {
+                                bookList.isNotEmpty() -> {
+                                    noData.visibility = GONE
+                                    favoriteItem.visibility = VISIBLE
+                                }
+                                else -> {
+                                    noData.visibility = VISIBLE
+                                    favoriteItem.visibility = GONE
+                                }
+                            }
                         }
 
                         override fun onCancelled(error: DatabaseError) {

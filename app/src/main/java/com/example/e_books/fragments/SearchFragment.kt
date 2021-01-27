@@ -9,10 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -42,8 +39,8 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private var listOfBooks = ArrayList<Books>()
 
     private lateinit var searchView: View
+    private lateinit var noData: ImageView
     private lateinit var db: FirebaseDatabase
-    private lateinit var noData: LinearLayout
     private lateinit var content: LinearLayout
     private lateinit var searchInput: EditText
     private lateinit var progressBar: ProgressBar
