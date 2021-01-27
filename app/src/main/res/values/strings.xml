@@ -62,13 +62,6 @@
     <string name="read_now">Read Now</string>
     <string name="_read_now">წაკითხვა</string>
 
-    <!-- Not Found -->
-    <string name="sorry">I\'m Sorry,</string>
-    <string name="_sorry">ვწუხვარ,</string>
-    <string name="not_found">Your List is Empty</string>
-    <string name="_not_found">თქვენი სია ცარიელია</string>
-    <string name="_no_books_found">ჩანაწერი არ მოიძებნა</string>
-
     <!-- Fragment Titles -->
     <string name="_favorites">რჩეული წიგნები</string>
     <string name="_search">ძებნა</string>
