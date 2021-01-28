@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.e_books.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -87,6 +88,10 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
                 logOutButton.setOnClickListener {
                     auth.signOut()
                     findNavController().navigate(R.id.action_profile_to_login)
+                    (activity as AppCompatActivity).apply {
+                        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+                        bottomNav.selectedItemId = R.id.nav_home
+                    }
                 }
 
                 savePassword.setOnClickListener {
