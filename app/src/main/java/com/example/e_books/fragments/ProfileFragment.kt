@@ -46,41 +46,41 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         profileView = inflater.inflate(R.layout.profile_fragment, container, false)
-        (activity as AppCompatActivity).apply {
-            title = getString(R.string._profile)
-            supportActionBar?.apply {
-                show()
-                setDisplayHomeAsUpEnabled(false)
-            }
-            bottomNav = findViewById(R.id.bottom_navigation)
-            bottomNav.apply {
-                visibility = VISIBLE
-                when {
-                    selectedItemId != R.id.nav_profile -> selectedItemId = R.id.nav_profile
-                }
-            }
-        }
 
         auth = Firebase.auth
-        passField = profileView.findViewById(R.id.textPass)
-        cancelEditing = profileView.findViewById(R.id.cancel)
-        savePassword = profileView.findViewById(R.id.save_password)
-        currentField = profileView.findViewById(R.id.textCurrentPass)
-        passRepeatField = profileView.findViewById(R.id.textPassRepeat)
-        changePassword = profileView.findViewById(R.id.change_password)
-        emailDisplay = profileView.findViewById(R.id.email_display_text)
-        mainContent = profileView.findViewById(R.id.profile_main_content)
-        passwordChangeContent = profileView.findViewById(R.id.password_edit_content)
-        settingsButton = profileView.findViewById(R.id.settings_button)
-        logOutButton = profileView.findViewById(R.id.log_out)
-
-        emailDisplay.text = auth.currentUser!!.email
-
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.action_profile_to_login)
             else -> {
+                (activity as AppCompatActivity).apply {
+                    title = getString(R.string._profile)
+                    supportActionBar?.apply {
+                        show()
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                    bottomNav = findViewById(R.id.bottom_navigation)
+                    bottomNav.apply {
+                        visibility = VISIBLE
+                        when {
+                            selectedItemId != R.id.nav_profile -> selectedItemId = R.id.nav_profile
+                        }
+                    }
+                }
+
+                passField = profileView.findViewById(R.id.textPass)
+                cancelEditing = profileView.findViewById(R.id.cancel)
+                savePassword = profileView.findViewById(R.id.save_password)
+                currentField = profileView.findViewById(R.id.textCurrentPass)
+                passRepeatField = profileView.findViewById(R.id.textPassRepeat)
+                changePassword = profileView.findViewById(R.id.change_password)
+                emailDisplay = profileView.findViewById(R.id.email_display_text)
+                mainContent = profileView.findViewById(R.id.profile_main_content)
+                passwordChangeContent = profileView.findViewById(R.id.password_edit_content)
+                settingsButton = profileView.findViewById(R.id.settings_button)
+                logOutButton = profileView.findViewById(R.id.log_out)
+
+                emailDisplay.text = auth.currentUser!!.email
+
                 changePassword.setOnClickListener {
                     updateUi(PASS_CHANGE_PRESSED)
                 }

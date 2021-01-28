@@ -57,29 +57,30 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         savedInstanceState: Bundle?
     ): View {
         categoryView = inflater.inflate(R.layout.category_fragment, container, false)
-        (activity as AppCompatActivity).apply {
-            supportActionBar?.show()
-            title = getString(R.string.app_name)
-            bottomNav = findViewById(R.id.bottom_navigation)
-            bottomNav.apply {
-                visibility = VISIBLE
-                when {
-                    selectedItemId != R.id.nav_home -> selectedItemId = R.id.nav_home
-                }
-            }
-        }
-
-        setHasOptionsMenu(true)
 
         auth = Firebase.auth
-        db = Firebase.database
-        content = categoryView.findViewById(R.id.category_content)
-        categoryItem = categoryView.findViewById(R.id.category_item)
-        progressBar = categoryView.findViewById(R.id.category_progress_bar)
-
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.action_category_to_login)
             else -> {
+                (activity as AppCompatActivity).apply {
+                    supportActionBar?.show()
+                    title = getString(R.string.app_name)
+                    bottomNav = findViewById(R.id.bottom_navigation)
+                    bottomNav.apply {
+                        visibility = VISIBLE
+                        when {
+                            selectedItemId != R.id.nav_home -> selectedItemId = R.id.nav_home
+                        }
+                    }
+                }
+
+                setHasOptionsMenu(true)
+
+                db = Firebase.database
+                content = categoryView.findViewById(R.id.category_content)
+                categoryItem = categoryView.findViewById(R.id.category_item)
+                progressBar = categoryView.findViewById(R.id.category_progress_bar)
+
                 val categoriesData = bookLiveData.categoriesData.value
                 when {
                     categoriesData != null -> {
@@ -130,7 +131,6 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
                     })
             }
         }
-
         return categoryView
     }
 

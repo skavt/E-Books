@@ -61,37 +61,37 @@ class SearchFragment : Fragment(R.layout.search_fragment),
         savedInstanceState: Bundle?
     ): View {
         searchView = inflater.inflate(R.layout.search_fragment, container, false)
-        (activity as AppCompatActivity).apply {
-            title = getString(R.string._search)
-            supportActionBar?.apply {
-                show()
-                setDisplayHomeAsUpEnabled(false)
-            }
-            bottomNav = findViewById(R.id.bottom_navigation)
-            bottomNav.apply {
-                visibility = VISIBLE
-                when {
-                    selectedItemId != R.id.nav_search -> selectedItemId = R.id.nav_search
-                }
-            }
-        }
 
         auth = Firebase.auth
-        db = Firebase.database
-        noData = searchView.findViewById(R.id.no_data)
-        searchInput = searchView.findViewById(R.id.search)
-        searchItem = searchView.findViewById(R.id.search_item)
-        content = searchView.findViewById(R.id.search_content)
-        progressBar = searchView.findViewById(R.id.search_progress_bar)
-
-        searchInput.requestFocus()
-        listOfBooks.clear()
-
-        val booksData = bookLiveData.booksLiveData.value
-
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.action_search_to_login)
             else -> {
+                (activity as AppCompatActivity).apply {
+                    title = getString(R.string._search)
+                    supportActionBar?.apply {
+                        show()
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                    bottomNav = findViewById(R.id.bottom_navigation)
+                    bottomNav.apply {
+                        visibility = VISIBLE
+                        when {
+                            selectedItemId != R.id.nav_search -> selectedItemId = R.id.nav_search
+                        }
+                    }
+                }
+
+                db = Firebase.database
+                noData = searchView.findViewById(R.id.no_data)
+                searchInput = searchView.findViewById(R.id.search)
+                searchItem = searchView.findViewById(R.id.search_item)
+                content = searchView.findViewById(R.id.search_content)
+                progressBar = searchView.findViewById(R.id.search_progress_bar)
+
+                searchInput.requestFocus()
+                listOfBooks.clear()
+
+                val booksData = bookLiveData.booksLiveData.value
                 when {
                     booksData != null -> {
                         searchBookList = booksData as ArrayList<Books>

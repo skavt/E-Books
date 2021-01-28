@@ -55,30 +55,31 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
         savedInstanceState: Bundle?
     ): View {
         favoritesView = inflater.inflate(R.layout.favorites_fragment, container, false)
-        (activity as AppCompatActivity).apply {
-            title = getString(R.string._favorites)
-            supportActionBar?.apply {
-                show()
-                setDisplayHomeAsUpEnabled(false)
-            }
-            bottomNav = findViewById(R.id.bottom_navigation)
-            bottomNav.apply {
-                when {
-                    selectedItemId != R.id.nav_favorite -> selectedItemId = R.id.nav_favorite
-                }
-            }
-        }
 
         auth = Firebase.auth
-        db = Firebase.database
-        noData = favoritesView.findViewById(R.id.no_fav_data)
-        favoriteItem = favoritesView.findViewById(R.id.favorites_item)
-        progressBar = favoritesView.findViewById(R.id.favorites_progress_bar)
-
-
         when (auth.currentUser) {
             null -> findNavController().navigate(R.id.action_favorites_to_login)
             else -> {
+                (activity as AppCompatActivity).apply {
+                    title = getString(R.string._favorites)
+                    supportActionBar?.apply {
+                        show()
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                    bottomNav = findViewById(R.id.bottom_navigation)
+                    bottomNav.apply {
+                        when {
+                            selectedItemId != R.id.nav_favorite -> selectedItemId =
+                                R.id.nav_favorite
+                        }
+                    }
+                }
+
+                db = Firebase.database
+                noData = favoritesView.findViewById(R.id.no_fav_data)
+                favoriteItem = favoritesView.findViewById(R.id.favorites_item)
+                progressBar = favoritesView.findViewById(R.id.favorites_progress_bar)
+
                 db.reference.child("favorites")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -121,7 +122,6 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
                     })
             }
         }
-
         return favoritesView
     }
 
