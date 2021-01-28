@@ -53,7 +53,7 @@
                 android:padding="10dp"
                 android:text="@string/change_password"
                 android:textAlignment="center"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/blue"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:ignore="RtlSymmetry" />
@@ -65,7 +65,7 @@
                 android:padding="10dp"
                 android:text="@string/settings"
                 android:textAlignment="center"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/blue"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:ignore="RtlSymmetry" />
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/log_out"
-                android:textAlignment="center"
+                android:textAlignment="viewEnd"
                 android:textColor="@color/red"
                 android:textSize="18sp"
                 android:textStyle="bold"
