@@ -9,6 +9,7 @@
         android:id="@+id/category_fragment"
         android:name="com.example.e_books.fragments.CategoryFragment"
         tools:layout="@layout/category_fragment">
+
         <action
             android:id="@+id/action_category_to_see_more"
             app:destination="@id/category_details_fragment" />
@@ -20,69 +21,99 @@
         <action
             android:id="@+id/action_category_to_login"
             app:destination="@id/login_fragment" />
-        <action
-            android:id="@+id/action_category_fragment_to_profile_fragment"
-            app:destination="@id/profile_fragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/category_details_fragment"
         android:name="com.example.e_books.fragments.CategoryDetailsFragment"
         tools:layout="@layout/category_details_fragment">
+
         <action
             android:id="@+id/action_see_more_to_category"
             app:destination="@id/category_fragment" />
+
         <action
             android:id="@+id/action_see_more_to_book_details"
             app:destination="@id/book_details_fragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/book_details_fragment"
         android:name="com.example.e_books.fragments.BookDetailsFragment"
         tools:layout="@layout/book_details_fragment">
 
+        <action
+            android:id="@+id/action_book_details_to_pdf_view"
+            app:destination="@id/pdf_view_fragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/pdf_view_fragment"
         android:name="com.example.e_books.fragments.PdfViewFragment"
-        tools:layout="@layout/pdf_view_fragment">
+        tools:layout="@layout/pdf_view_fragment"/>
 
-    </fragment>
     <fragment
         android:id="@+id/favorites_fragment"
         android:name="com.example.e_books.fragments.FavoritesFragment"
         tools:layout="@layout/favorites_fragment">
 
+        <action
+            android:id="@+id/action_favorites_to_login"
+            app:destination="@id/login_fragment" />
+
+        <action
+            android:id="@+id/action_favorites_to_book_details"
+            app:destination="@id/book_details_fragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/search_fragment"
         android:name="com.example.e_books.fragments.SearchFragment"
         tools:layout="@layout/search_fragment">
 
+        <action
+            android:id="@+id/action_search_to_login"
+            app:destination="@id/login_fragment" />
+
+
+        <action
+            android:id="@+id/action_search_to_book_details"
+            app:destination="@id/book_details_fragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/login_fragment"
         android:name="com.example.e_books.fragments.LoginFragment"
-        android:label="login_fragment"
         tools:layout="@layout/login_fragment">
+
         <action
             android:id="@+id/action_login_to_category"
-            app:destination="@id/category_fragment"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/category_fragment"/>
+
     </fragment>
+
     <fragment
         android:id="@+id/profile_fragment"
         android:name="com.example.e_books.fragments.ProfileFragment"
-        android:label="profile_fragment"
         tools:layout="@layout/profile_fragment" >
+
         <action
-            android:id="@+id/action_profile_fragment_to_login_fragment"
+            android:id="@+id/action_profile_to_login"
             app:destination="@id/login_fragment" />
+
         <action
-            android:id="@+id/action_profile_fragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/settings_fragment" />
+
     </fragment>
+
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/settings_fragment"
         android:name="com.example.e_books.fragments.SettingsFragment"
         android:label="SettingsFragment" />
 

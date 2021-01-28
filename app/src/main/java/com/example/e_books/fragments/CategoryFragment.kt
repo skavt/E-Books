@@ -131,12 +131,12 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
 
     override fun onSeeMoreClick(category: Category) {
         bookLiveData.setCategory(category)
-        categoryView.findNavController().navigate(R.id.category_details_fragment)
+        categoryView.findNavController().navigate(R.id.action_category_to_see_more)
     }
 
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)
-        categoryView.findNavController().navigate(R.id.book_details_fragment)
+        categoryView.findNavController().navigate(R.id.action_category_to_book_details)
     }
 
     private fun setAdapter() {

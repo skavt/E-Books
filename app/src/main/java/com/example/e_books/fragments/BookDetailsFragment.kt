@@ -71,7 +71,7 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
                 bookId = book_id
                 context?.let { Glide.with(it).load(imageUrl).into(image) }
                 readerButton.setOnClickListener {
-                    findNavController().navigate(R.id.pdf_view_fragment)
+                    findNavController().navigate(R.id.action_book_details_to_pdf_view)
                 }
             }
         })

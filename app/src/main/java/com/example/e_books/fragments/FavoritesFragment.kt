@@ -69,7 +69,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
 
 
         when (auth.currentUser) {
-            null -> findNavController().navigate(R.id.login_fragment)
+            null -> findNavController().navigate(R.id.action_favorites_to_login)
             else -> {
                 db.reference.child("favorites")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -121,6 +121,6 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
 
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)
-        favoritesView.findNavController().navigate(R.id.book_details_fragment)
+        favoritesView.findNavController().navigate(R.id.action_favorites_to_book_details)
     }
 }

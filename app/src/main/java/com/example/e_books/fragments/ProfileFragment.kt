@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -70,35 +69,39 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
 
         emailDisplay.text = auth.currentUser!!.email
 
-        changePassword.setOnClickListener {
-            updateUi(PASS_CHANGE_PRESSED)
-        }
-
-        cancelEditing.setOnClickListener {
-            updateUi(PASS_CHANGE_FINISH)
-        }
-
-        settingsButton.setOnClickListener {
-            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSettingsFragment())
-        }
-
-        logOutButton.setOnClickListener {
-            auth.signOut()
-            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
-        }
-
-        savePassword.setOnClickListener {
-            val currentPassword = currentField.text.toString()
-            when {
-                validatePassword(currentField) -> {
-                    auth.currentUser!!.email?.let { it1 ->
-                        reAuth(it1, currentPassword, PASS_CHANGE_FINISH)
-                    }
+        when (auth.currentUser) {
+            null -> findNavController().navigate(R.id.action_profile_to_login)
+            else -> {
+                changePassword.setOnClickListener {
+                    updateUi(PASS_CHANGE_PRESSED)
                 }
 
+                cancelEditing.setOnClickListener {
+                    updateUi(PASS_CHANGE_FINISH)
+                }
+
+                settingsButton.setOnClickListener {
+                    findNavController().navigate(R.id.action_profile_to_settings)
+                }
+
+                logOutButton.setOnClickListener {
+                    auth.signOut()
+                    findNavController().navigate(R.id.action_profile_to_login)
+                }
+
+                savePassword.setOnClickListener {
+                    val currentPassword = currentField.text.toString()
+                    when {
+                        validatePassword(currentField) -> {
+                            auth.currentUser!!.email?.let { it1 ->
+                                reAuth(it1, currentPassword, PASS_CHANGE_FINISH)
+                            }
+                        }
+
+                    }
+                }
             }
         }
-
         return profileView
     }
 

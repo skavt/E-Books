@@ -57,7 +57,7 @@ class CategoryDetailsFragment : Fragment(R.layout.category_details_fragment),
 
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)
-        categoryDetailsView.findNavController().navigate(R.id.book_details_fragment)
+        categoryDetailsView.findNavController().navigate(R.id.action_see_more_to_book_details)
     }
 
 }

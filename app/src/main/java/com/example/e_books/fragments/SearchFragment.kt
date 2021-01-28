@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,8 @@ import com.example.e_books.extentions.castBookData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -40,6 +43,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
     private lateinit var searchView: View
     private lateinit var noData: ImageView
+    private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var content: LinearLayout
     private lateinit var searchInput: EditText
@@ -63,6 +67,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
             }
         }
 
+        auth = Firebase.auth
         db = Firebase.database
         noData = searchView.findViewById(R.id.no_data)
         searchInput = searchView.findViewById(R.id.search)
@@ -75,72 +80,78 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
         val booksData = bookLiveData.booksLiveData.value
 
-        when {
-            booksData != null -> {
-                searchBookList = booksData as ArrayList<Books>
-                setAdapter()
-            }
+        when (auth.currentUser) {
+            null -> findNavController().navigate(R.id.action_search_to_login)
             else -> {
-                db.reference.child("categories")
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            dataSnapshot.children.forEach {
-                                var index = 0
-                                val data = it.child("books").value as ArrayList<*>
-
-                                while (index < data.size) {
-                                    searchBookList.add(castBookData(data[index] as HashMap<*, *>))
-                                    index++
-                                }
-                            }
-                            setAdapter()
-
-                            bookLiveData.setBooks(searchBookList)
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(
-                                context, getString(R.string.something_wrong), Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    })
-            }
-        }
-
-        searchInput.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                listOfBooks.clear()
-                listOfBooks.addAll(searchBookList.search(p0.toString()))
-                (searchItem.adapter as SearchAdapter).notifyDataSetChanged()
                 when {
-                    listOfBooks.isEmpty() -> {
-                        noData.visibility = VISIBLE
-                        searchItem.visibility = GONE
+                    booksData != null -> {
+                        searchBookList = booksData as ArrayList<Books>
+                        setAdapter()
                     }
                     else -> {
-                        searchItem.visibility = VISIBLE
-                        noData.visibility = GONE
+                        db.reference.child("categories")
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    dataSnapshot.children.forEach {
+                                        var index = 0
+                                        val data = it.child("books").value as ArrayList<*>
+
+                                        while (index < data.size) {
+                                            searchBookList.add(castBookData(data[index] as HashMap<*, *>))
+                                            index++
+                                        }
+                                    }
+                                    setAdapter()
+
+                                    bookLiveData.setBooks(searchBookList)
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(
+                                        context,
+                                        getString(R.string.something_wrong),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            })
                     }
                 }
+
+                searchInput.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(p0: Editable?) {}
+
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                        listOfBooks.clear()
+                        listOfBooks.addAll(searchBookList.search(p0.toString()))
+                        (searchItem.adapter as SearchAdapter).notifyDataSetChanged()
+                        when {
+                            listOfBooks.isEmpty() -> {
+                                noData.visibility = VISIBLE
+                                searchItem.visibility = GONE
+                            }
+                            else -> {
+                                searchItem.visibility = VISIBLE
+                                noData.visibility = GONE
+                            }
+                        }
+                    }
+
+                })
+
+                searchInput.setOnTouchListener(OnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (event.rawX + 30 >= searchInput.right - searchInput.compoundDrawables[2].bounds.width()
+                        ) {
+                            searchInput.text.clear()
+                            return@OnTouchListener true
+                        }
+                    }
+                    false
+                })
             }
-
-        })
-
-        searchInput.setOnTouchListener(OnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX + 30 >= searchInput.right - searchInput.compoundDrawables[2].bounds.width()
-                ) {
-                    searchInput.text.clear()
-                    return@OnTouchListener true
-                }
-            }
-            false
-        })
-
+        }
         return searchView
     }
 
@@ -161,7 +172,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
 
     override fun onBookClick(book: Books) {
         bookLiveData.setBook(book)
-        searchView.findNavController().navigate(R.id.book_details_fragment)
+        searchView.findNavController().navigate(R.id.action_search_to_book_details)
     }
 
     private fun setAdapter() {

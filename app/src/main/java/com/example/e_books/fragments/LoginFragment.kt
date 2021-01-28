@@ -222,7 +222,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
                     Toast.makeText(context, "Hello, ${user?.email}", Toast.LENGTH_LONG).show()
-                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.action_login_to_category)
                 }
                 else -> {
                     // If registration fails, display a message to the user.
@@ -240,7 +240,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                 it.isSuccessful -> {
                     val user = auth.currentUser
                     Toast.makeText(context, "Hello, ${user?.email}", Toast.LENGTH_LONG).show()
-                    findNavController().navigate(LoginFragmentDirections.actionLoginToCategory())
+                    findNavController().navigate(R.id.action_login_to_category)
                 }
                 else -> {
                     // If sign in fails, display a message to the user.
