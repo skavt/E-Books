@@ -4,11 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.SettingsFragment">
 
-    <ListPreference
-        app:defaultValue="@string/dark_mode_def_value"
-        app:entries="@array/dark_mode_entries"
-        app:entryValues="@array/dark_mode_values"
-        app:key="@string/dark_mode"
-        app:title="@string/dark_mode" />
+    <PreferenceCategory
+        app:key="appearance_category"
+        app:title="Appearance">
+
+        <ListPreference
+            app:defaultValue="@string/dark_mode_def_value"
+            app:entries="@array/dark_mode_entries"
+            app:entryValues="@array/dark_mode_values"
+            app:key="@string/dark_mode"
+            app:title="@string/dark_mode" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="contact_category"
+        app:title="Contact">
+
+        <Preference
+            app:key="contact"
+            app:title="e-books@gmail.com">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.gmail.com" />
+
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="help_category"
+        app:title="Help">
+
+        <Preference
+            app:key="feedback"
+            app:summary="Report technical issues or suggest new features"
+            app:title="Send feedback">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.gmail.com" />
+
+        </Preference>
+
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

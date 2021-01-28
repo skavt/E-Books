@@ -10,7 +10,6 @@ import androidx.preference.PreferenceManager
 import com.example.e_books.R
 import com.firebase.ui.auth.AuthUI.getApplicationContext
 
-
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
