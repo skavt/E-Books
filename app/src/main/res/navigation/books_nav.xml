@@ -53,7 +53,7 @@
     <fragment
         android:id="@+id/pdf_view_fragment"
         android:name="com.example.e_books.fragments.PdfViewFragment"
-        tools:layout="@layout/pdf_view_fragment"/>
+        tools:layout="@layout/pdf_view_fragment" />
 
     <fragment
         android:id="@+id/favorites_fragment"
@@ -79,7 +79,6 @@
             android:id="@+id/action_search_to_login"
             app:destination="@id/login_fragment" />
 
-
         <action
             android:id="@+id/action_search_to_book_details"
             app:destination="@id/book_details_fragment" />
@@ -93,14 +92,16 @@
 
         <action
             android:id="@+id/action_login_to_category"
-            app:destination="@id/category_fragment"/>
+            app:destination="@id/category_fragment"
+            app:popUpTo="@+id/books_nav"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
     <fragment
         android:id="@+id/profile_fragment"
         android:name="com.example.e_books.fragments.ProfileFragment"
-        tools:layout="@layout/profile_fragment" >
+        tools:layout="@layout/profile_fragment">
 
         <action
             android:id="@+id/action_profile_to_login"

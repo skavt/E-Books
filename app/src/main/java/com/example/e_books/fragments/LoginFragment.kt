@@ -203,11 +203,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
     private fun updateUiState(user: FirebaseUser?) {
         user?.let {
-            loginButton.text = getString(R.string.log_out)
-            textEmail.visibility = GONE
-            textPass.visibility = GONE
-            registerButton.visibility = GONE
-
+            findNavController().navigate(R.id.action_login_to_category)
         } ?: run {
             loginButton.text = getString(R.string.sign_in)
             textEmail.visibility = VISIBLE

@@ -24,6 +24,7 @@ import com.example.e_books.extentions.castBookData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -49,6 +50,7 @@ class SearchFragment : Fragment(R.layout.search_fragment),
     private lateinit var searchInput: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var searchItem: RecyclerView
+    private lateinit var bottomNav: BottomNavigationView
 
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
@@ -64,6 +66,13 @@ class SearchFragment : Fragment(R.layout.search_fragment),
             supportActionBar?.apply {
                 show()
                 setDisplayHomeAsUpEnabled(false)
+            }
+            bottomNav = findViewById(R.id.bottom_navigation)
+            bottomNav.apply {
+                visibility = VISIBLE
+                when {
+                    selectedItemId != R.id.nav_search -> selectedItemId = R.id.nav_search
+                }
             }
         }
 

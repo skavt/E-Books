@@ -6,7 +6,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +47,7 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
     private lateinit var progressBar: ProgressBar
     private lateinit var content: NestedScrollView
     private lateinit var categoryItem: RecyclerView
+    private lateinit var bottomNav: BottomNavigationView
 
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
@@ -60,9 +60,14 @@ class CategoryFragment : Fragment(R.layout.category_fragment), CategoryAdapter.O
         (activity as AppCompatActivity).apply {
             supportActionBar?.show()
             title = getString(R.string.app_name)
+            bottomNav = findViewById(R.id.bottom_navigation)
+            bottomNav.apply {
+                visibility = VISIBLE
+                when {
+                    selectedItemId != R.id.nav_home -> selectedItemId = R.id.nav_home
+                }
+            }
         }
-        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation)
-        navBar.visibility = VISIBLE
 
         setHasOptionsMenu(true)
 

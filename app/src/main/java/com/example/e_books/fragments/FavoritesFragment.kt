@@ -23,6 +23,7 @@ import com.example.e_books.extentions.castBookData
 import com.example.e_books.model.Books
 import com.example.e_books.model.Category
 import com.example.e_books.services.BookLiveData
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -44,6 +45,7 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
     private lateinit var db: FirebaseDatabase
     private lateinit var progressBar: ProgressBar
     private lateinit var favoriteItem: RecyclerView
+    private lateinit var bottomNav: BottomNavigationView
 
     private val bookLiveData: BookLiveData by navGraphViewModels(R.id.books_nav)
 
@@ -58,6 +60,12 @@ class FavoritesFragment : Fragment(R.layout.favorites_fragment),
             supportActionBar?.apply {
                 show()
                 setDisplayHomeAsUpEnabled(false)
+            }
+            bottomNav = findViewById(R.id.bottom_navigation)
+            bottomNav.apply {
+                when {
+                    selectedItemId != R.id.nav_favorite -> selectedItemId = R.id.nav_favorite
+                }
             }
         }
 

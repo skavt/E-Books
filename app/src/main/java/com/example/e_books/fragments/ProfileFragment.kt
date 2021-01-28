@@ -27,16 +27,17 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
     private lateinit var profileView: View
     private lateinit var auth: FirebaseAuth
     private lateinit var passField: TextView
+    private lateinit var logOutButton: TextView
     private lateinit var currentField: TextView
     private lateinit var emailDisplay: TextView
     private lateinit var cancelEditing: TextView
-    private lateinit var changePassword: TextView
     private lateinit var settingsButton: TextView
-    private lateinit var logOutButton: TextView
-    private lateinit var mainContent: LinearLayout
+    private lateinit var changePassword: TextView
     private lateinit var passRepeatField: TextView
+    private lateinit var mainContent: LinearLayout
     private lateinit var savePassword: AppCompatButton
     private lateinit var passwordChangeContent: CardView
+    private lateinit var bottomNav: BottomNavigationView
 
 
     @SuppressLint("ShowToast")
@@ -52,6 +53,13 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
             supportActionBar?.apply {
                 show()
                 setDisplayHomeAsUpEnabled(false)
+            }
+            bottomNav = findViewById(R.id.bottom_navigation)
+            bottomNav.apply {
+                visibility = VISIBLE
+                when {
+                    selectedItemId != R.id.nav_profile -> selectedItemId = R.id.nav_profile
+                }
             }
         }
 
@@ -88,10 +96,6 @@ class ProfileFragment : Fragment(R.layout.profile_fragment) {
                 logOutButton.setOnClickListener {
                     auth.signOut()
                     findNavController().navigate(R.id.action_profile_to_login)
-                    (activity as AppCompatActivity).apply {
-                        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-                        bottomNav.selectedItemId = R.id.nav_home
-                    }
                 }
 
                 savePassword.setOnClickListener {
