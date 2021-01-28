@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/log_out"
-                android:textAlignment="viewEnd"
+                android:textAlignment="center"
                 android:textColor="@color/red"
                 android:textSize="18sp"
                 android:textStyle="bold"
