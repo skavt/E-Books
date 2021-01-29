@@ -34,6 +34,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
     private lateinit var loginText: TextView
     private lateinit var formTitle: TextView
     private lateinit var newUserText: LinearLayout
+    private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,9 +42,11 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         savedInstanceState: Bundle?
     ): View {
         loginView = inflater.inflate(R.layout.login_fragment, container, false)
-        (activity as AppCompatActivity).supportActionBar?.hide()
-        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation)
-        navBar.visibility = GONE
+        (activity as AppCompatActivity).apply {
+            supportActionBar?.hide()
+            bottomNav = findViewById(R.id.bottom_navigation)
+            bottomNav.visibility = GONE
+        }
 
 
         setHasOptionsMenu(true)

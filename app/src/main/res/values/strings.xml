@@ -88,5 +88,8 @@
     <string name="dark_mode_def_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
     <string name="dark_mode">Dark Mode</string>
 
+    <!-- Success Messages -->
+    <string name="_add_successfully">წარმატებით დაემატა რჩეულებში</string>
+    <string name="_remove_successfully">წარმატებით წაიშალა რჩეულებიდან</string>
 
 </resources>

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -98,6 +99,8 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
 
             addToFav.visibility = GONE
             removeFromFav.visibility = VISIBLE
+
+            Toast.makeText(context, getString(R.string._add_successfully), Toast.LENGTH_LONG).show()
         }
 
         removeFromFav.setOnClickListener {
@@ -105,6 +108,7 @@ class BookDetailsFragment : Fragment(R.layout.book_details_fragment) {
 
             addToFav.visibility = VISIBLE
             removeFromFav.visibility = GONE
+            Toast.makeText(context, getString(R.string._remove_successfully), Toast.LENGTH_LONG).show()
         }
 
         return bookDetailsView
