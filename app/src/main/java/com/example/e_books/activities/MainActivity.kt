@@ -27,9 +27,9 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnNavigationItemSelectedListener(navListener)
 
         // Set selected mode
-        sharedPreferences = getSharedPreferences("SharedPrefs", MODE_PRIVATE);
-        nightMode = sharedPreferences.getInt("NightModeInt", 1);
-        AppCompatDelegate.setDefaultNightMode(nightMode);
+        sharedPreferences = getSharedPreferences("SharedPrefs", MODE_PRIVATE)
+        nightMode = sharedPreferences.getInt("NightModeInt", 1)
+        AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 
     override fun onSupportNavigateUp(): Boolean {
